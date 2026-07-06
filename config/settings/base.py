@@ -36,33 +36,39 @@ DJANGO_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
 ]
 
-LOCAL_APPS = [
-    # "core.apps.CoreCofig",
-    "apps.accounts.apps.AccountsConfig",
-    # "academics.apps.AcademicsConfig",
-    # "labs.apps.LabsConfig",
-    # "bookings.apps.BookingsConfig",
-    # "attendance.apps.AttendanceConfig",
-    # "assessments.apps.AssessmentsConfig",
-    # "inventory.apps.InventoryConfig",
-    # "reports.apps.ReportsConfig",
-    # "notification.apps.NotificationsConfig",
+THIRD_PARTY_APPS = [
+    "allauth",
+    "allauth.account",
 ]
 
-THIRD_PARTY_APPS = []
+LOCAL_APPS = [
+    "apps.core.apps.CoreConfig",
+    "apps.accounts.apps.AccountsConfig",
+    # "apps.academics.apps.AcademicsConfig",
+    # "apps.labs.apps.LabsConfig",
+    # "apps.bookings.apps.BookingsConfig",
+    # "apps.attendance.apps.AttendanceConfig",
+    # "apps.assessments.apps.AssessmentsConfig",
+    # "apps.inventory.apps.InventoryConfig",
+    # "apps.reports.apps.ReportsConfig",
+    # "apps.notification.apps.NotificationsConfig",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -81,6 +87,7 @@ TEMPLATES = [
                 "django.template.context_processors.static",
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                "apps.core.context_processors.navigation",
             ],
         },
     },
@@ -158,6 +165,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "dashboard"
-LOGOUT_REDIRECT_URL = "login"
+SITE_ID = 1
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+
+LOGIN_URL = "account_login"
+LOGIN_REDIRECT_URL = "core:dashboard"
+LOGOUT_REDIRECT_URL = "core:home"
+
+ACCOUNT_LOGIN_METHODS = {"username"}
+ACCOUNT_EMAIL_VERIFICATION = "none"
+ACCOUNT_ADAPTER = "apps.accounts.adapters.AccountAdapter"
+ACCOUNT_LOGOUT_REDIRECT_URL = "core:home"

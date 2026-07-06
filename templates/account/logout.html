@@ -1,0 +1,34 @@
+{% extends "layouts/auth.html" %}
+
+{% block title %}Logout | KP-HSLMS{% endblock %}
+
+{% block auth_content %}
+<div class="kp-auth-card">
+    <div class="kp-auth-card-header">
+        <p class="kp-eyebrow">End session</p>
+        <h2>Logout</h2>
+        <p>Are you sure you want to logout from KP-HSLMS?</p>
+    </div>
+
+    <form method="post" action="{% url 'account_logout' %}">
+        {% csrf_token %}
+
+        {% if redirect_field_value %}
+            <input
+                type="hidden"
+                name="{{ redirect_field_name }}"
+                value="{{ redirect_field_value }}"
+            >
+        {% endif %}
+
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-kp-primary">
+                Yes, logout
+            </button>
+            <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

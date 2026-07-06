@@ -14,9 +14,30 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+
+    # Third-party auth routes
+    path("accounts/", include("allauth.urls")),
+
+    # Local apps
+    path("", include("apps.core.urls")),
+    path("accounts/manage/", include("apps.accounts.urls")),
+    # path("academics/", include("apps.academics.urls")),
+    # path("labs/", include("apps.labs.urls")),
+    # path("bookings/", include("apps.bookings.urls")),
+    # path("attendance/", include("apps.attendance.urls")),
+    # path("assessments/", include("apps.assessments.urls")),
+    # path("inventory/", include("apps.inventory.urls")),
+    # path("reports/", include("apps.reports.urls")),
+    # path("notifications/", include("apps.notifications.urls")),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,79 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Dashboard | KP-HSLMS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="kp-dashboard-header">
+    <div>
+        <p class="kp-eyebrow">Dashboard</p>
+        <h1>Welcome, {{ request.user.get_full_name|default:request.user.username }}</h1>
+        <p>
+            Your current role is
+            <strong>{{ request.user.role|default:"User" }}</strong>.
+        </p>
+    </div>
+
+    <div class="kp-dashboard-badge">
+        <span>KP-HSLMS</span>
+        <strong>Phase 1</strong>
+    </div>
+</section>
+
+<section class="row g-4">
+    {% for card in dashboard_cards %}
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-dashboard-card">
+                <div class="kp-dashboard-card-value">{{ card.value }}</div>
+                <h2>{{ card.title }}</h2>
+                <p>{{ card.description }}</p>
+                <a href="{{ card.href|default:'#' }}" class="stretched-link">
+                    Open
+                </a>
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No dashboard cards are configured for your role yet.
+            </div>
+        </div>
+    {% endfor %}
+</section>
+
+<section class="kp-dashboard-rules mt-4">
+    <div class="row g-4">
+        <div class="col-lg-4">
+            <div class="kp-rule-card">
+                <span>01</span>
+                <h3>Attendance rule</h3>
+                <p>Students must reach at least 80% attendance to become eligible for self-practice and OSCE.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="kp-rule-card">
+                <span>02</span>
+                <h3>Pass mark rule</h3>
+                <p>OSCE pass mark is 60% and above.</p>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="kp-rule-card">
+                <span>03</span>
+                <h3>Retake rule</h3>
+                <p>If a student passes a retake, the final recorded retake mark is 60%.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'core/js/dashboard.js' %}"></script>
+{% endblock %}

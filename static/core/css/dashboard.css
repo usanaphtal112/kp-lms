@@ -1,0 +1,114 @@
+.kp-dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.kp-dashboard-header h1 {
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.kp-dashboard-header p {
+    margin-bottom: 0;
+    color: var(--kp-muted);
+}
+
+.kp-dashboard-badge {
+    min-width: 150px;
+    padding: 1rem;
+    border-radius: var(--kp-radius);
+    background: var(--kp-accent-soft);
+    color: var(--kp-accent);
+    text-align: right;
+}
+
+.kp-dashboard-badge span,
+.kp-dashboard-badge strong {
+    display: block;
+}
+
+.kp-dashboard-card {
+    position: relative;
+    min-height: 220px;
+    padding: 1.5rem;
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    border: 1px solid var(--kp-border);
+    box-shadow: var(--kp-shadow);
+    overflow: hidden;
+}
+
+.kp-dashboard-card::after {
+    content: "";
+    position: absolute;
+    width: 8rem;
+    height: 8rem;
+    right: -3rem;
+    bottom: -3rem;
+    border-radius: 50%;
+    background: rgba(49, 176, 213, 0.12);
+}
+
+.kp-dashboard-card-value {
+    display: inline-flex;
+    min-width: 4rem;
+    min-height: 4rem;
+    padding: 0.75rem;
+    border-radius: 1rem;
+    align-items: center;
+    justify-content: center;
+    background: rgba(49, 176, 213, 0.12);
+    color: var(--kp-primary-dark);
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.kp-dashboard-card h2 {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.kp-dashboard-card p {
+    color: var(--kp-muted);
+}
+
+.kp-rule-card {
+    height: 100%;
+    padding: 1.25rem;
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    border: 1px solid var(--kp-border);
+}
+
+.kp-rule-card span {
+    display: inline-block;
+    font-weight: 900;
+    color: var(--kp-accent);
+    margin-bottom: 0.5rem;
+}
+
+.kp-rule-card h3 {
+    font-size: 1.1rem;
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.kp-rule-card p {
+    margin-bottom: 0;
+    color: var(--kp-muted);
+}
+
+@media (max-width: 767.98px) {
+    .kp-dashboard-header {
+        flex-direction: column;
+    }
+
+    .kp-dashboard-badge {
+        width: 100%;
+        text-align: left;
+    }
+}

@@ -1,0 +1,27 @@
+<aside class="kp-sidebar" id="appSidebar">
+    <div class="kp-sidebar-header">
+        <div>
+            <p class="kp-sidebar-eyebrow">Logged in as</p>
+            <h2>{{ request.user.role|default:"User" }}</h2>
+        </div>
+    </div>
+
+    <nav class="kp-sidebar-nav" aria-label="Main navigation">
+        <ul>
+            {% for item in sidebar_items %}
+                <li>
+                    <a
+                        class="{% if item.match and item.match in request.path %}active{% endif %}"
+                        href="{% if item.url_name %}{% url item.url_name %}{% else %}{{ item.href }}{% endif %}"
+                    >
+                        <span>{{ item.label }}</span>
+                    </a>
+                </li>
+            {% empty %}
+                <li>
+                    <span class="kp-sidebar-empty">No menu items available.</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+</aside>

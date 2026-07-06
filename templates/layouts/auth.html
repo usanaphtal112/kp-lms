@@ -1,0 +1,29 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block body_class %}kp-auth-page{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'account/css/auth.css' %}">
+    {% block auth_extra_css %}{% endblock %}
+{% endblock %}
+
+{% block app_body %}
+    <main class="kp-auth-shell">
+        <section class="kp-auth-brand-panel">
+            <div class="kp-auth-brand-content">
+                <div class="kp-brand-mark">KP</div>
+                <h1>KP-HSLMS</h1>
+                <p>
+                    Health Sciences Laboratory Management System for demonstrations,
+                    self-practice, OSCE, attendance, inventory, and academic progression.
+                </p>
+            </div>
+        </section>
+
+        <section class="kp-auth-form-panel">
+            {% include "partials/messages.html" %}
+            {% block auth_content %}{% endblock %}
+        </section>
+    </main>
+{% endblock %}

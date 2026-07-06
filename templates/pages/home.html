@@ -1,0 +1,100 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block title %}Home | KP-HSLMS{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="kp-home-hero">
+    <div class="row align-items-center g-5">
+        <div class="col-lg-7">
+            <p class="kp-eyebrow">Kibogora Polytechnic · Faculty of Health Sciences</p>
+            <h1>Smart Clinical Skills Laboratory & Competency Management System</h1>
+            <p class="kp-home-lead">
+                Manage demonstrations, attendance, self-practice, OSCE assessments,
+                inventory, clinical reports, and student competency progression in one platform.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3 mt-4">
+                <a href="{% url 'account_login' %}" class="btn btn-kp-primary btn-lg">
+                    Login to system
+                </a>
+                <a href="#system-modules" class="btn btn-outline-secondary btn-lg">
+                    View modules
+                </a>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="kp-hero-card">
+                <div class="kp-hero-stat">
+                    <span>80%</span>
+                    <p>Attendance requirement for self-practice and OSCE eligibility</p>
+                </div>
+                <div class="kp-hero-stat">
+                    <span>60%</span>
+                    <p>Pass mark for OSCE assessment and retake processing</p>
+                </div>
+                <div class="kp-hero-stat">
+                    <span>360°</span>
+                    <p>Student practical competency history and portfolio tracking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="kp-section" id="system-modules">
+    <div class="kp-section-heading">
+        <p class="kp-eyebrow">System modules</p>
+        <h2>Built for health sciences practical learning</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>Demonstrations</h3>
+                <p>Lecturer booking, lab approval, schedules, and attendance recording.</p>
+            </article>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>Self-Practice</h3>
+                <p>Student booking, supervisor verification, and procedure tracking.</p>
+            </article>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>OSCE Assessment</h3>
+                <p>Stations, rubrics, marks entry, approval, results, and retakes.</p>
+            </article>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>Inventory</h3>
+                <p>Consumables, stock movements, session usage, and Excel reports.</p>
+            </article>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>Clinical Reports</h3>
+                <p>Student reports, clinical teaching reports, reviews, and downloads.</p>
+            </article>
+        </div>
+
+        <div class="col-md-6 col-xl-4">
+            <article class="kp-module-card">
+                <h3>Administration</h3>
+                <p>Approvals, monitoring, lecturer assignment, and system control.</p>
+            </article>
+        </div>
+    </div>
+</section>
+{% endblock %}
