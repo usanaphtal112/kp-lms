@@ -1,0 +1,160 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}{{ target_user.username }} | KP-HSLMS{% endblock %}
+
+{% block accounts_extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/css/user-detail.css' %}">
+{% endblock %}
+
+{% block accounts_content %}
+<section class="accounts-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">User profile</p>
+        <h1>{{ target_user.get_full_name|default:target_user.username }}</h1>
+        <p>{{ target_user.username }}</p>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'accounts:user_update' target_user.pk %}" class="btn btn-kp-primary">
+            Edit
+        </a>
+        <a href="{% url 'accounts:admin_password_reset' target_user.pk %}" class="btn btn-outline-secondary">
+            Reset password
+        </a>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card account-detail-card">
+            <div class="card-header">
+                <strong>Account information</strong>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Username</dt>
+                    <dd class="col-sm-8">{{ target_user.username }}</dd>
+
+                    <dt class="col-sm-4">Full name</dt>
+                    <dd class="col-sm-8">{{ target_user.get_full_name|default:"—" }}</dd>
+
+                    <dt class="col-sm-4">Email</dt>
+                    <dd class="col-sm-8">{{ target_user.email|default:"—" }}</dd>
+
+                    <dt class="col-sm-4">Phone</dt>
+                    <dd class="col-sm-8">{{ target_user.phone_number|default:"—" }}</dd>
+
+                    <dt class="col-sm-4">Role</dt>
+                    <dd class="col-sm-8">{{ target_user.get_role_display }}</dd>
+
+                    <dt class="col-sm-4">Status</dt>
+                    <dd class="col-sm-8">
+                        {% if target_user.is_active %}
+                            <span class="badge text-bg-success">Active</span>
+                        {% else %}
+                            <span class="badge text-bg-secondary">Inactive</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-4">Password flag</dt>
+                    <dd class="col-sm-8">
+                        {% if target_user.must_change_password %}
+                            <span class="badge text-bg-warning">Must change password</span>
+                        {% else %}
+                            <span class="badge text-bg-light">Password updated</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card account-detail-card mt-4">
+            <div class="card-header">
+                <strong>Profile information</strong>
+            </div>
+            <div class="card-body">
+                {% if target_user.student_profile %}
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Registration number</dt>
+                        <dd class="col-sm-8">{{ target_user.student_profile.registration_number }}</dd>
+
+                        <dt class="col-sm-4">Student type</dt>
+                        <dd class="col-sm-8">{{ target_user.student_profile.get_student_type_display }}</dd>
+
+                        <dt class="col-sm-4">Academic status</dt>
+                        <dd class="col-sm-8">{{ target_user.student_profile.get_academic_status_display }}</dd>
+
+                        <dt class="col-sm-4">Current level</dt>
+                        <dd class="col-sm-8">{{ target_user.student_profile.get_current_academic_level_display }}</dd>
+                    </dl>
+                {% elif target_user.staff_profile %}
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Staff number</dt>
+                        <dd class="col-sm-8">{{ target_user.staff_profile.staff_number|default:"—" }}</dd>
+
+                        <dt class="col-sm-4">Job title</dt>
+                        <dd class="col-sm-8">{{ target_user.staff_profile.job_title|default:"—" }}</dd>
+
+                        <dt class="col-sm-4">Department</dt>
+                        <dd class="col-sm-8">{{ target_user.staff_profile.department_name|default:"—" }}</dd>
+
+                        <dt class="col-sm-4">Office</dt>
+                        <dd class="col-sm-8">{{ target_user.staff_profile.office_location|default:"—" }}</dd>
+                    </dl>
+                {% else %}
+                    <p class="text-muted mb-0">No profile record found for this user.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card account-detail-card">
+            <div class="card-header">
+                <strong>Actions</strong>
+            </div>
+            <div class="card-body d-grid gap-2">
+                {% if target_user.is_active %}
+                    <form method="post" action="{% url 'accounts:user_deactivate' target_user.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger w-100">
+                            Deactivate account
+                        </button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{% url 'accounts:user_activate' target_user.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-success w-100">
+                            Activate account
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card account-detail-card mt-4">
+            <div class="card-header">
+                <strong>Recent account logs</strong>
+            </div>
+            <div class="list-group list-group-flush">
+                {% for log in account_logs %}
+                    <div class="list-group-item">
+                        <strong>{{ log.get_action_display }}</strong>
+                        <div class="small text-muted">
+                            By {{ log.actor|default:"System" }} · {{ log.created_at }}
+                        </div>
+                        {% if log.message %}
+                            <div class="small">{{ log.message }}</div>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="list-group-item text-muted">
+                        No account logs found.
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

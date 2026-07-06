@@ -1,0 +1,52 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}Accounts Dashboard | KP-HSLMS{% endblock %}
+
+{% block accounts_extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
+{% endblock %}
+
+{% block accounts_content %}
+<section class="accounts-header">
+    <div>
+        <p class="kp-eyebrow">IT Administration</p>
+        <h1>Accounts Dashboard</h1>
+        <p>Manage users, roles, temporary passwords, and account status.</p>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-6 col-xl-3">
+        <a href="{% url 'accounts:user_list' %}" class="account-card">
+            <span>Users</span>
+            <strong>View all</strong>
+            <p>Search and manage all accounts.</p>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="{% url 'accounts:student_create' %}" class="account-card">
+            <span>Students</span>
+            <strong>Create</strong>
+            <p>Generate student account using registration number.</p>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="{% url 'accounts:staff_create' %}" class="account-card">
+            <span>Staff</span>
+            <strong>Create</strong>
+            <p>Create lecturer, coordinator, administration, or IT account.</p>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-3">
+        <a href="#" class="account-card">
+            <span>Logs</span>
+            <strong>Audit</strong>
+            <p>Track account changes and password reset activities.</p>
+        </a>
+    </div>
+</div>
+{% endblock %}

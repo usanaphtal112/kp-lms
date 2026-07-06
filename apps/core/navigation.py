@@ -16,6 +16,13 @@ SIDEBAR_ITEMS = [
         "roles": ALL_ROLES,
     },
     {
+        "label": "Accounts Dashboard",
+        "url_name": "accounts:dashboard",
+        "href": None,
+        "match": "/accounts/manage/",
+        "roles": ["IT_ADMIN"],
+    },
+    {
         "label": "Academic Setup",
         "url_name": None,
         "href": "#",
@@ -66,8 +73,8 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Users & Permissions",
-        "url_name": None,
-        "href": "#",
+        "url_name": "accounts:user_list",
+        "href": None,
         "match": "/accounts/manage/",
         "roles": ["IT_ADMIN"],
     },

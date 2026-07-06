@@ -69,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     "allauth.account.middleware.AccountMiddleware",
+    "apps.accounts.middleware.MustChangePasswordMiddleware",
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -180,3 +181,13 @@ ACCOUNT_LOGIN_METHODS = {"username"}
 ACCOUNT_EMAIL_VERIFICATION = "none"
 ACCOUNT_ADAPTER = "apps.accounts.adapters.AccountAdapter"
 ACCOUNT_LOGOUT_REDIRECT_URL = "core:home"
+
+KPLMS_DEFAULT_STUDENT_PASSWORD = config(
+    "KPLMS_DEFAULT_STUDENT_PASSWORD",
+    default="Kplms123",
+)
+
+KPLMS_DEFAULT_STAFF_PASSWORD = config(
+    "KPLMS_DEFAULT_STAFF_PASSWORD",
+    default="Kplms123",
+)

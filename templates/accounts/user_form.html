@@ -1,0 +1,67 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}{{ page_title }} | KP-HSLMS{% endblock %}
+
+{% block accounts_extra_css %}
+    <link rel="stylesheet" href="{% static 'accounts/css/user-form.css' %}">
+{% endblock %}
+
+{% block accounts_content %}
+<section class="accounts-header">
+    <p class="kp-eyebrow">Accounts</p>
+    <h1>{{ page_title }}</h1>
+    <p>Complete the form below. Fields marked with validation errors must be corrected.</p>
+</section>
+
+<form method="post" class="card account-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    {% if field.field.widget.input_type == "checkbox" %}
+                        <div class="form-check mt-4">
+                            {{ field }}
+                            <label class="form-check-label" for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+                        </div>
+                    {% else %}
+                        <label class="form-label" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'accounts:user_list' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            {{ submit_label|default:"Save" }}
+        </button>
+    </div>
+</form>
+{% endblock %}

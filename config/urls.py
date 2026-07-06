@@ -25,6 +25,7 @@ urlpatterns = [
 
     # Third-party auth routes
     path("accounts/", include("allauth.urls")),
+    path("accounts/manage/", include("apps.accounts.urls")),
 
     # Local apps
     path("", include("apps.core.urls")),
