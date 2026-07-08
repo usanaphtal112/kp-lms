@@ -1,0 +1,13 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'academics/css/academics.css' %}">
+    {% block academics_extra_css %}{% endblock %}
+{% endblock %}
+
+{% block content %}
+<div class="academics-page">
+    {% block academics_content %}{% endblock %}
+</div>
+{% endblock %}

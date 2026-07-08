@@ -1,0 +1,64 @@
+{% extends "academics/base.html" %}
+
+{% block title %}{{ module.code }} | KP-HSLMS{% endblock %}
+
+{% block academics_content %}
+<section class="academics-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Module</p>
+        <h1>{{ module.code }} - {{ module.title }}</h1>
+        <p>{{ module.program }}</p>
+    </div>
+
+    <a href="{% url 'academics:module_update' module.pk %}" class="btn btn-kp-primary">
+        Edit module
+    </a>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="academic-panel">
+            <h2>Module details</h2>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Program</dt>
+                <dd class="col-sm-8">{{ module.program }}</dd>
+
+                <dt class="col-sm-4">Year level</dt>
+                <dd class="col-sm-8">{{ module.get_year_level_display }}</dd>
+
+                <dt class="col-sm-4">Semester</dt>
+                <dd class="col-sm-8">{{ module.get_semester_number_display }}</dd>
+
+                <dt class="col-sm-4">Credits</dt>
+                <dd class="col-sm-8">{{ module.credits }}</dd>
+
+                <dt class="col-sm-4">Attendance requirement</dt>
+                <dd class="col-sm-8">{{ module.attendance_requirement }}%</dd>
+
+                <dt class="col-sm-4">Pass mark</dt>
+                <dd class="col-sm-8">{{ module.pass_mark }}%</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="academic-panel">
+            <h2>Procedures</h2>
+
+            <div class="list-group list-group-flush">
+                {% for procedure in module.procedures.all %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ procedure.code }} - {{ procedure.name }}</strong>
+                        <div class="small text-muted">
+                            Minimum practices: {{ procedure.minimum_required_practices }}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">No procedures registered for this module.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

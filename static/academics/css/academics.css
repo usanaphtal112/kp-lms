@@ -1,0 +1,88 @@
+.academics-header {
+    margin-bottom: 1.5rem;
+}
+
+.academics-header h1 {
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.academics-header p {
+    color: var(--kp-muted);
+    margin-bottom: 0;
+}
+
+.academic-card,
+.academic-panel,
+.academic-table-card,
+.academic-form-card {
+    border: 1px solid var(--kp-border);
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    box-shadow: var(--kp-shadow);
+}
+
+.academic-card {
+    display: block;
+    height: 100%;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--kp-text);
+}
+
+.academic-card span {
+    display: block;
+    color: var(--kp-accent);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+}
+
+.academic-card strong {
+    display: block;
+    margin: 0.35rem 0;
+    font-size: 1.75rem;
+    color: var(--kp-dark);
+}
+
+.academic-card p {
+    color: var(--kp-muted);
+    margin-bottom: 0;
+}
+
+.academic-card:hover {
+    border-color: var(--kp-primary);
+}
+
+.academic-panel {
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.academic-panel h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--kp-dark);
+    margin-bottom: 1rem;
+}
+
+.academic-table-card {
+    overflow: hidden;
+}
+
+.academic-table-card table th {
+    color: var(--kp-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.academic-form-card {
+    overflow: hidden;
+}
+
+.academic-form-card .card-footer {
+    background: #ffffff;
+    border-top: 1px solid var(--kp-border);
+}

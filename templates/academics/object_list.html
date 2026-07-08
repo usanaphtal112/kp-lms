@@ -1,0 +1,93 @@
+{% extends "academics/base.html" %}
+
+{% block title %}{{ page_title }} | KP-HSLMS{% endblock %}
+
+{% block academics_content %}
+<section class="academics-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Academic structure</p>
+        <h1>{{ page_title }}</h1>
+        <p>{{ page_subtitle }}</p>
+    </div>
+
+    {% if create_url_name %}
+        <a href="{% url create_url_name %}" class="btn btn-kp-primary">
+            Create
+        </a>
+    {% endif %}
+</section>
+
+<div class="card academic-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    {% for header in table_headers %}
+                        <th>{{ header }}</th>
+                    {% endfor %}
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for row in table_rows %}
+                    <tr>
+                        {% for cell in row.cells %}
+                            <td>{{ cell|default:"—" }}</td>
+                        {% endfor %}
+                        <td class="text-end">
+                            <div class="btn-group btn-group-sm">
+                                {% if detail_url_name %}
+                                    <a href="{% url detail_url_name row.object.pk %}" class="btn btn-outline-secondary">
+                                        View
+                                    </a>
+                                {% endif %}
+
+                                {% if update_url_name %}
+                                    <a href="{% url update_url_name row.object.pk %}" class="btn btn-outline-secondary">
+                                        Edit
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="{{ table_headers|length|add:1 }}" class="text-center text-muted py-4">
+                            No records found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% if is_paginated %}
+    <nav class="mt-4">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                        Previous
+                    </a>
+                </li>
+            {% endif %}
+
+            <li class="page-item active">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                        Next
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endif %}
+{% endblock %}

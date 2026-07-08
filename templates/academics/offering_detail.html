@@ -1,0 +1,88 @@
+{% extends "academics/base.html" %}
+
+{% block title %}{{ offering }} | KP-HSLMS{% endblock %}
+
+{% block academics_content %}
+<section class="academics-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Module offering</p>
+        <h1>{{ offering.module.code }} - {{ offering.module.title }}</h1>
+        <p>{{ offering.cohort }} · {{ offering.academic_year }} · {{ offering.semester }}</p>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a href="{% url 'academics:offering_update' offering.pk %}" class="btn btn-outline-secondary">
+            Edit
+        </a>
+
+        <form method="post" action="{% url 'academics:offering_enroll_cohort' offering.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-kp-primary">
+                Enroll cohort students
+            </button>
+        </form>
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="academic-panel">
+            <h2>Enrollments</h2>
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrollment in offering.enrollments.all %}
+                            <tr>
+                                <td>
+                                    <strong>{{ enrollment.student.get_full_name|default:enrollment.student.username }}</strong>
+                                    <div class="small text-muted">{{ enrollment.student.username }}</div>
+                                </td>
+                                <td>{{ enrollment.get_enrollment_type_display }}</td>
+                                <td>{{ enrollment.get_status_display }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-muted">
+                                    No students enrolled yet.
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="academic-panel">
+            <h2>Procedure requirements</h2>
+
+            <div class="list-group list-group-flush">
+                {% for requirement in offering.procedure_requirements.all %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ requirement.procedure.name }}</strong>
+                        <div class="small text-muted">
+                            Required count: {{ requirement.required_count }}
+                            {% if requirement.due_date %}
+                                · Due: {{ requirement.due_date }}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">
+                        No procedure requirements generated yet.
+                    </p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -30,7 +30,7 @@ urlpatterns = [
     # Local apps
     path("", include("apps.core.urls")),
     path("accounts/manage/", include("apps.accounts.urls")),
-    # path("academics/", include("apps.academics.urls")),
+    path("academics/", include("apps.academics.urls")),
     # path("labs/", include("apps.labs.urls")),
     # path("bookings/", include("apps.bookings.urls")),
     # path("attendance/", include("apps.attendance.urls")),

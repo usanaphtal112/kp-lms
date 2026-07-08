@@ -187,3 +187,60 @@ class AccountActionLog(models.Model):
 
     def __str__(self):
         return f"{self.action} - {self.target_user}"
+    
+class StudentProfile(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="student_profile",
+    )
+    registration_number = models.CharField(
+        max_length=50,
+        unique=True,
+        db_index=True,
+    )
+    student_type = models.CharField(
+        max_length=30,
+        choices=StudentType.choices,
+        default=StudentType.REGULAR,
+    )
+    academic_status = models.CharField(
+        max_length=30,
+        choices=StudentAcademicStatus.choices,
+        default=StudentAcademicStatus.ACTIVE,
+    )
+    current_academic_level = models.PositiveSmallIntegerField(
+        choices=YearLevel.choices,
+        default=YearLevel.YEAR_1,
+    )
+    admission_year = models.PositiveSmallIntegerField(null=True, blank=True)
+
+    program = models.ForeignKey(
+        "academics.Program",
+        on_delete=models.PROTECT,
+        related_name="student_profiles",
+        null=True,
+        blank=True,
+    )
+    cohort = models.ForeignKey(
+        "academics.Cohort",
+        on_delete=models.PROTECT,
+        related_name="student_profiles",
+        null=True,
+        blank=True,
+    )
+
+    is_active_student = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self):
+        super().clean()
+
+        if self.program and self.cohort and self.cohort.program_id != self.program_id:
+            from django.core.exceptions import ValidationError
+
+            raise ValidationError(
+                "Selected cohort does not belong to the selected program."
+            )

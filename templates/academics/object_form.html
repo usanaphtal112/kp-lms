@@ -1,0 +1,62 @@
+{% extends "academics/base.html" %}
+
+{% block title %}{{ page_title }} | KP-HSLMS{% endblock %}
+
+{% block academics_content %}
+<section class="academics-header">
+    <p class="kp-eyebrow">Academic structure</p>
+    <h1>{{ page_title }}</h1>
+    <p>Complete the form below and save your changes.</p>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="card academic-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="{% if field.field.widget.input_type == 'checkbox' %}col-md-12{% else %}col-md-6{% endif %}">
+                    {% if field.field.widget.input_type == "checkbox" %}
+                        <div class="form-check mt-4">
+                            {{ field }}
+                            <label class="form-check-label" for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+                        </div>
+                    {% else %}
+                        <label class="form-label" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                    {% endif %}
+
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'academics:dashboard' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            {{ submit_label|default:"Save" }}
+        </button>
+    </div>
+</form>
+{% endblock %}

@@ -24,8 +24,8 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Academic Setup",
-        "url_name": None,
-        "href": "#",
+        "url_name": "academics:dashboard",
+        "href": None,
         "match": "/academics/",
         "roles": ["IT_ADMIN", "ADMINISTRATION"],
     },
@@ -108,6 +108,12 @@ DASHBOARD_CARDS = {
             "description": "Manage rules, roles, and platform configuration.",
             "href": "#",
         },
+        {
+            "title": "Academic Setup",
+            "value": "Manage",
+            "description": "Manage programs, cohorts, academic years, semesters, and modules.",
+            "href": "/academics/",
+        }
     ],
     "LECTURER": [
         {
