@@ -1,0 +1,58 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Demonstration Bookings | KP-HSLMS{% endblock %}
+
+{% block bookings_content %}
+<section class="booking-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Demonstrations</p>
+        <h1>Demonstration Bookings</h1>
+        <p>Manage requested, approved, and rejected demonstration bookings.</p>
+    </div>
+
+    <a href="{% url 'bookings:demonstration_create' %}" class="btn btn-kp-primary">
+        Request demonstration
+    </a>
+</section>
+
+<div class="card booking-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Module</th>
+                    <th>Lab room</th>
+                    <th>Time</th>
+                    <th>Requested by</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.title }}</td>
+                        <td>{{ booking.module_offering.module.code }}</td>
+                        <td>{{ booking.lab_room }}</td>
+                        <td>{{ booking.start_at }} → {{ booking.end_at }}</td>
+                        <td>{{ booking.requested_by }}</td>
+                        <td>{{ booking.get_status_display }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-sm btn-outline-secondary">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            No demonstration bookings found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

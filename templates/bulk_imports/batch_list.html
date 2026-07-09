@@ -1,0 +1,60 @@
+{% extends "bulk_imports/base.html" %}
+
+{% block title %}Bulk Imports | KP-HSLMS{% endblock %}
+
+{% block bulk_imports_content %}
+<section class="bulk-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Bulk registration</p>
+        <h1>Bulk Imports</h1>
+        <p>Upload CSV or Excel files to register many records at once.</p>
+    </div>
+
+    <a href="{% url 'bulk_imports:upload' %}" class="btn btn-kp-primary">
+        New import
+    </a>
+</section>
+
+<div class="card bulk-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                    <th>Valid</th>
+                    <th>Invalid</th>
+                    <th>Imported</th>
+                    <th>Uploaded by</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                    <tr>
+                        <td>{{ batch.get_importer_type_display }}</td>
+                        <td>{{ batch.get_status_display }}</td>
+                        <td>{{ batch.total_rows }}</td>
+                        <td>{{ batch.valid_rows }}</td>
+                        <td>{{ batch.invalid_rows }}</td>
+                        <td>{{ batch.imported_rows }}</td>
+                        <td>{{ batch.uploaded_by|default:"—" }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'bulk_imports:batch_detail' batch.pk %}" class="btn btn-sm btn-outline-secondary">
+                                View
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No imports yet.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

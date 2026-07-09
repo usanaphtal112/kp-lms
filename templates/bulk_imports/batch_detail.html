@@ -1,0 +1,88 @@
+{% extends "bulk_imports/base.html" %}
+
+{% block title %}Import Preview | KP-HSLMS{% endblock %}
+
+{% block bulk_imports_content %}
+<section class="bulk-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Import preview</p>
+        <h1>{{ batch.get_importer_type_display }}</h1>
+        <p>Status: {{ batch.get_status_display }}</p>
+    </div>
+
+    {% if batch.invalid_rows == 0 and batch.imported_rows == 0 %}
+        <form method="post" action="{% url 'bulk_imports:batch_commit' batch.pk %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-kp-primary">
+                Commit import
+            </button>
+        </form>
+    {% endif %}
+</section>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="bulk-stat-card">
+            <span>Total</span>
+            <strong>{{ batch.total_rows }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="bulk-stat-card">
+            <span>Valid</span>
+            <strong>{{ batch.valid_rows }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="bulk-stat-card">
+            <span>Invalid</span>
+            <strong>{{ batch.invalid_rows }}</strong>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="bulk-stat-card">
+            <span>Imported</span>
+            <strong>{{ batch.imported_rows }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="card bulk-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Row</th>
+                    <th>Status</th>
+                    <th>Data</th>
+                    <th>Errors</th>
+                    <th>Created object</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in batch.rows.all %}
+                    <tr>
+                        <td>{{ row.row_number }}</td>
+                        <td>{{ row.get_status_display }}</td>
+                        <td>
+                            <pre class="bulk-json">{{ row.raw_data }}</pre>
+                        </td>
+                        <td>
+                            {% if row.errors %}
+                                <ul class="mb-0">
+                                    {% for error in row.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td>{{ row.object_repr|default:"—" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

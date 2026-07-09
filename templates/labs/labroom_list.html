@@ -1,0 +1,62 @@
+{% extends "labs/base.html" %}
+
+{% block title %}Lab Rooms | KP-HSLMS{% endblock %}
+
+{% block labs_content %}
+<section class="lab-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Lab rooms</p>
+        <h1>Lab Rooms</h1>
+        <p>Manage clinical skills lab rooms and capacity.</p>
+    </div>
+
+    <a href="{% url 'labs:labroom_create' %}" class="btn btn-kp-primary">
+        Create room
+    </a>
+</section>
+
+<div class="card lab-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in lab_rooms %}
+                    <tr>
+                        <td>{{ room.code }}</td>
+                        <td>{{ room.name }}</td>
+                        <td>{{ room.location|default:"—" }}</td>
+                        <td>{{ room.capacity }}</td>
+                        <td>
+                            {% if room.is_active %}
+                                <span class="badge text-bg-success">Active</span>
+                            {% else %}
+                                <span class="badge text-bg-secondary">Inactive</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'labs:labroom_update' room.pk %}" class="btn btn-sm btn-outline-secondary">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            No lab rooms found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

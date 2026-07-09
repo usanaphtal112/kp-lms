@@ -31,10 +31,24 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Lab Bookings",
-        "url_name": None,
-        "href": "#",
+        "url_name": "bookings:dashboard",
+        "href": None,
         "match": "/bookings/",
         "roles": ["LECTURER", "LAB_COORDINATOR", "ADMINISTRATION"],
+    },
+    {
+        "label": "Skills Lab",
+        "url_name": "labs:dashboard",
+        "href": None,
+        "match": "/labs/",
+        "roles": ["LAB_COORDINATOR", "ADMINISTRATION", "IT_ADMIN"],
+    },
+    {
+        "label": "Data Imports",
+        "url_name": "bulk_imports:batch_list",
+        "href": None,
+        "match": "/imports/",
+        "roles": ["IT_ADMIN", "ADMINISTRATION"],
     },
     {
         "label": "Attendance",

@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'labs/css/labs.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="labs-page">
+    {% block labs_content %}{% endblock %}
+</div>
+{% endblock %}

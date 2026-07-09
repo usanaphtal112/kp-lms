@@ -1,0 +1,58 @@
+{% extends "labs/base.html" %}
+
+{% block title %}Lab Room | KP-HSLMS{% endblock %}
+
+{% block labs_content %}
+<section class="lab-header">
+    <p class="kp-eyebrow">Lab rooms</p>
+    <h1>Lab room</h1>
+    <p>Create or update a laboratory room.</p>
+</section>
+
+<form method="post" class="card lab-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    {% if field.field.widget.input_type == "checkbox" %}
+                        <div class="form-check mt-4">
+                            {{ field }}
+                            <label class="form-check-label" for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+                        </div>
+                    {% else %}
+                        <label class="form-label" for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'labs:labroom_list' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Save
+        </button>
+    </div>
+</form>
+{% endblock %}

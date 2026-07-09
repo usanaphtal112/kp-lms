@@ -1,0 +1,86 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}{{ booking.title }} | KP-HSLMS{% endblock %}
+
+{% block bookings_content %}
+<section class="booking-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Booking detail</p>
+        <h1>{{ booking.title }}</h1>
+        <p>{{ booking.get_status_display }}</p>
+    </div>
+
+    {% if booking.status == "REQUESTED" %}
+        {% if request.user.role == "LAB_COORDINATOR" or request.user.role == "ADMINISTRATION" or request.user.role == "IT_ADMIN" %}
+            <div class="d-flex gap-2">
+                <form method="post" action="{% url 'bookings:booking_approve' booking.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-kp-primary">
+                        Approve
+                    </button>
+                </form>
+
+                <a href="{% url 'bookings:booking_reject' booking.pk %}" class="btn btn-outline-danger">
+                    Reject
+                </a>
+            </div>
+        {% endif %}
+    {% endif %}
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="booking-panel">
+            <h2>Booking information</h2>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-4">Type</dt>
+                <dd class="col-sm-8">{{ booking.get_booking_type_display }}</dd>
+
+                <dt class="col-sm-4">Module offering</dt>
+                <dd class="col-sm-8">{{ booking.module_offering }}</dd>
+
+                <dt class="col-sm-4">Lab room</dt>
+                <dd class="col-sm-8">{{ booking.lab_room }}</dd>
+
+                <dt class="col-sm-4">Start</dt>
+                <dd class="col-sm-8">{{ booking.start_at }}</dd>
+
+                <dt class="col-sm-4">End</dt>
+                <dd class="col-sm-8">{{ booking.end_at }}</dd>
+
+                <dt class="col-sm-4">Requested by</dt>
+                <dd class="col-sm-8">{{ booking.requested_by }}</dd>
+
+                <dt class="col-sm-4">Approved by</dt>
+                <dd class="col-sm-8">{{ booking.approved_by|default:"—" }}</dd>
+
+                <dt class="col-sm-4">Rejection reason</dt>
+                <dd class="col-sm-8">{{ booking.rejection_reason|default:"—" }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="booking-panel">
+            <h2>Demonstration procedures</h2>
+
+            {% if booking.demonstration_session %}
+                <p><strong>Topic:</strong> {{ booking.demonstration_session.topic }}</p>
+
+                <div class="list-group list-group-flush">
+                    {% for item in booking.demonstration_session.session_procedures.all %}
+                        <div class="list-group-item px-0">
+                            {{ item.procedure.code }} - {{ item.procedure.name }}
+                        </div>
+                    {% empty %}
+                        <p class="text-muted mb-0">No procedures attached.</p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-muted mb-0">No demonstration session found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

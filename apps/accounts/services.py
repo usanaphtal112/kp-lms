@@ -66,6 +66,8 @@ def create_student_account(
     academic_status,
     current_academic_level,
     admission_year=None,
+    program=None,
+    cohort=None,
     created_by=None,
 ):
     User = get_user_model()
@@ -92,6 +94,8 @@ def create_student_account(
         academic_status=academic_status,
         current_academic_level=current_academic_level,
         admission_year=admission_year,
+        program=program,
+        cohort=cohort,
     )
 
     assign_user_group(user)

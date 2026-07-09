@@ -49,13 +49,14 @@ LOCAL_APPS = [
     "apps.core.apps.CoreConfig",
     "apps.accounts.apps.AccountsConfig",
     "apps.academics.apps.AcademicsConfig",
-    # "apps.labs.apps.LabsConfig",
-    # "apps.bookings.apps.BookingsConfig",
+    "apps.labs.apps.LabsConfig",
+    "apps.bookings.apps.BookingsConfig",
     # "apps.attendance.apps.AttendanceConfig",
     # "apps.assessments.apps.AssessmentsConfig",
     # "apps.inventory.apps.InventoryConfig",
     # "apps.reports.apps.ReportsConfig",
     # "apps.notification.apps.NotificationsConfig",
+    "apps.bulk_imports.apps.BulkImportsConfig",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -190,4 +191,9 @@ KPLMS_DEFAULT_STUDENT_PASSWORD = config(
 KPLMS_DEFAULT_STAFF_PASSWORD = config(
     "KPLMS_DEFAULT_STAFF_PASSWORD",
     default="Kplms123",
+)
+
+KPLMS_MAX_IMPORT_FILE_SIZE_MB = config(
+    "KPLMS_MAX_IMPORT_FILE_SIZE_MB",
+    default=5, cast=int
 )

@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from apps.academics.models import Cohort, Program
 
 from .models import (
     StaffProfile,
@@ -71,6 +72,14 @@ class StudentAccountCreateForm(BootstrapFormMixin, forms.Form):
     academic_status = forms.ChoiceField(choices=StudentAcademicStatus.choices)
     current_academic_level = forms.ChoiceField(choices=YearLevel.choices)
     admission_year = forms.IntegerField(required=False, min_value=2000)
+    program = forms.ModelChoiceField(
+    queryset=Program.objects.filter(is_active=True),
+    required=False,
+    )
+    cohort = forms.ModelChoiceField(
+        queryset=Cohort.objects.filter(is_active=True),
+        required=False,
+    )
 
     def __init__(self, *args, **kwargs):
         self.created_by = kwargs.pop("created_by", None)
@@ -96,6 +105,19 @@ class StudentAccountCreateForm(BootstrapFormMixin, forms.Form):
             )
 
         return registration_number
+    
+    def clean(self):
+        cleaned_data = super().clean()
+
+        program = cleaned_data.get("program")
+        cohort = cleaned_data.get("cohort")
+
+        if program and cohort and cohort.program_id != program.id:
+            raise forms.ValidationError(
+                "Selected cohort does not belong to the selected program."
+            )
+
+        return cleaned_data
 
     def save(self):
         return create_student_account(
@@ -109,6 +131,8 @@ class StudentAccountCreateForm(BootstrapFormMixin, forms.Form):
             current_academic_level=self.cleaned_data["current_academic_level"],
             admission_year=self.cleaned_data["admission_year"],
             created_by=self.created_by,
+            program=self.cleaned_data["program"],
+            cohort=self.cleaned_data["cohort"],
         )
 
 

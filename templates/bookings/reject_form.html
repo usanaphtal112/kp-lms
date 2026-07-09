@@ -1,0 +1,47 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Reject Booking | KP-HSLMS{% endblock %}
+
+{% block bookings_content %}
+<section class="booking-header">
+    <p class="kp-eyebrow">Booking decision</p>
+    <h1>Reject booking</h1>
+    <p>{{ booking.title }}</p>
+</section>
+
+<form method="post" class="card booking-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'bookings:booking_detail' booking.pk %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-outline-danger">
+            Reject booking
+        </button>
+    </div>
+</form>
+{% endblock %}

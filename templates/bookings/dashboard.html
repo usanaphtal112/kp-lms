@@ -1,0 +1,46 @@
+{% extends "bookings/base.html" %}
+
+{% block title %}Bookings | KP-HSLMS{% endblock %}
+
+{% block bookings_content %}
+<section class="booking-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Laboratory bookings</p>
+        <h1>Booking Dashboard</h1>
+        <p>Request, approve, reject, and monitor laboratory bookings.</p>
+    </div>
+
+    <a href="{% url 'bookings:demonstration_create' %}" class="btn btn-kp-primary">
+        Request demonstration
+    </a>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="booking-stat-card">
+            <span>Requested</span>
+            <strong>{{ requested_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="booking-stat-card">
+            <span>Approved</span>
+            <strong>{{ approved_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="booking-stat-card">
+            <span>Rejected</span>
+            <strong>{{ rejected_count }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="{% url 'bookings:demonstration_list' %}" class="btn btn-outline-secondary">
+        View demonstration bookings
+    </a>
+</div>
+{% endblock %}

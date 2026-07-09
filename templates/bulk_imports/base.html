@@ -1,0 +1,12 @@
+{% extends "layouts/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'bulk_imports/css/bulk-imports.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="bulk-imports-page">
+    {% block bulk_imports_content %}{% endblock %}
+</div>
+{% endblock %}

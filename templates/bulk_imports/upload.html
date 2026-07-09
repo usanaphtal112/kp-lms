@@ -1,0 +1,70 @@
+{% extends "bulk_imports/base.html" %}
+
+{% block title %}Upload Import | KP-HSLMS{% endblock %}
+
+{% block bulk_imports_content %}
+<section class="bulk-header">
+    <p class="kp-eyebrow">Bulk registration</p>
+    <h1>Upload CSV or Excel</h1>
+    <p>The system will validate the file first. Nothing is created until you commit the import.</p>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="card bulk-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'bulk_imports:batch_list' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Validate file
+        </button>
+    </div>
+</form>
+
+<div class="bulk-help-panel mt-4">
+    <h2>Required headers</h2>
+
+    <h3>Students</h3>
+    <code>registration_number,first_name,last_name,email,phone_number,student_type,academic_status,current_academic_level,admission_year,program_code,cohort_code</code>
+
+    <h3>Staff / Lecturers</h3>
+    <code>username,first_name,last_name,email,phone_number,role,staff_number,job_title,department_name,office_location</code>
+
+    <h3>Modules</h3>
+    <code>program_code,code,title,year_level,semester_number,credits,attendance_requirement,pass_mark,description</code>
+
+    <h3>Procedures</h3>
+    <code>program_code,module_code,code,name,minimum_required_practices,is_required,description</code>
+
+    <h3>Lab rooms</h3>
+    <code>code,name,location,capacity</code>
+</div>
+{% endblock %}
