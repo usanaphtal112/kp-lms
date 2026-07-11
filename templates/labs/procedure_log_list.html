@@ -1,0 +1,53 @@
+{% extends "labs/base.html" %}
+
+{% block title %}Procedure Logs | KP-HSLMS{% endblock %}
+
+{% block labs_content %}
+<section class="lab-header">
+    <p class="kp-eyebrow">Competency tracking</p>
+    <h1>Procedure Logs</h1>
+    <p>Verified procedures performed during self-practice sessions.</p>
+</section>
+
+<div class="card lab-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Module</th>
+                    <th>Procedure</th>
+                    <th>Count</th>
+                    <th>Status</th>
+                    <th>Verified by</th>
+                    <th>Verified at</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in procedure_logs %}
+                    <tr>
+                        <td>
+                            <strong>{{ log.student.get_full_name|default:log.student.username }}</strong>
+                            <div class="small text-muted">
+                                {{ log.student.student_profile.registration_number|default:log.student.username }}
+                            </div>
+                        </td>
+                        <td>{{ log.module_offering.module.code }}</td>
+                        <td>{{ log.procedure.code }} - {{ log.procedure.name }}</td>
+                        <td>{{ log.performed_count }}</td>
+                        <td>{{ log.get_status_display }}</td>
+                        <td>{{ log.verified_by|default:"—" }}</td>
+                        <td>{{ log.verified_at|default:"—" }}</td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">
+                            No procedure logs found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

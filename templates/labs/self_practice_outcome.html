@@ -1,0 +1,52 @@
+{% extends "labs/base.html" %}
+
+{% block title %}Record Self-Practice Outcome | KP-HSLMS{% endblock %}
+
+{% block labs_content %}
+<section class="lab-header">
+    <p class="kp-eyebrow">Self-practice outcome</p>
+    <h1>Record Attendance & Procedures</h1>
+    <p>{{ session.student }} · {{ session.module_offering }}</p>
+</section>
+
+<form method="post" class="card lab-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.help_text %}
+                    <div class="form-text">{{ field.help_text }}</div>
+                {% endif %}
+
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'labs:self_practice_detail' session.pk %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Save outcome
+        </button>
+    </div>
+</form>
+{% endblock %}

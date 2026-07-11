@@ -66,10 +66,29 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Self-Practice",
-        "url_name": None,
-        "href": "#",
+        "url_name": "labs:self_practice_list",
+        "href": None,
         "match": "/labs/self-practice/",
-        "roles": ["STUDENT", "LECTURER", "LAB_COORDINATOR"],
+        "roles": [
+            "STUDENT",
+            "LECTURER",
+            "LAB_COORDINATOR",
+            "ADMINISTRATION",
+            "IT_ADMIN",
+        ],
+    },
+    {
+        "label": "Procedure Logs",
+        "url_name": "labs:procedure_log_list",
+        "href": None,
+        "match": "/labs/procedure-logs/",
+        "roles": [
+            "STUDENT",
+            "LECTURER",
+            "LAB_COORDINATOR",
+            "ADMINISTRATION",
+            "IT_ADMIN",
+        ],
     },
     {
         "label": "OSCE Assessments",
@@ -153,7 +172,7 @@ DASHBOARD_CARDS = {
             "title": "Self-Practice",
             "value": "Supervise",
             "description": "Verify student practice and procedures performed.",
-            "href": "#",
+            "href": "/labs/self-practice/",
         },
         {
             "title": "OSCE Marks",
@@ -213,7 +232,7 @@ DASHBOARD_CARDS = {
             "title": "Self-Practice",
             "value": "Book",
             "description": "Request practice sessions after eligibility is met.",
-            "href": "#",
+            "href": "/labs/self-practice/create/",
         },
         {
             "title": "OSCE Results",

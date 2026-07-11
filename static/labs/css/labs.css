@@ -49,3 +49,25 @@
 .lab-form-card .card-footer {
     background: #ffffff;
 }
+
+.lab-panel {
+    padding: 1.5rem;
+    border: 1px solid var(--kp-border);
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    box-shadow: var(--kp-shadow);
+}
+
+.lab-panel h2 {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--kp-dark);
+    margin-bottom: 1rem;
+}
+
+.lab-table-card table th {
+    color: var(--kp-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}

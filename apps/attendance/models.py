@@ -177,3 +177,60 @@ class AttendanceChangeLog(models.Model):
 
     def __str__(self):
         return f"{self.attendance_record} changed by {self.actor}"
+    
+
+class SelfPracticeAttendanceRecord(models.Model):
+    student = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="self_practice_attendance_records",
+        limit_choices_to={"role": "STUDENT"},
+    )
+    self_practice_session = models.OneToOneField(
+        "labs.SelfPracticeSession",
+        on_delete=models.CASCADE,
+        related_name="attendance_record",
+    )
+    status = models.CharField(
+        max_length=30,
+        choices=AttendanceStatus.choices,
+        default=AttendanceStatus.UNMARKED,
+        db_index=True,
+    )
+    recorded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="recorded_self_practice_attendance",
+        null=True,
+        blank=True,
+    )
+    recorded_at = models.DateTimeField(null=True, blank=True)
+    remarks = models.TextField(blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["-recorded_at"]
+        indexes = [
+            models.Index(fields=["status"]),
+            models.Index(fields=["recorded_at"]),
+        ]
+
+    def clean(self):
+        super().clean()
+
+        if self.student_id and self.self_practice_session_id:
+            if self.self_practice_session.student_id != self.student_id:
+                raise ValidationError(
+                    "Attendance student must match the self-practice session student."
+                )
+
+    def mark(self, *, status, recorded_by, remarks=""):
+        self.status = status
+        self.recorded_by = recorded_by
+        self.recorded_at = timezone.now()
+        self.remarks = remarks
+
+    def __str__(self):
+        return f"{self.student} - {self.self_practice_session} - {self.status}"

@@ -1,7 +1,11 @@
 from django.contrib import admin
 
-from .models import AttendanceChangeLog, AttendanceRecord, EligibilitySnapshot
-
+from .models import (
+    AttendanceChangeLog,
+    AttendanceRecord,
+    EligibilitySnapshot,
+    SelfPracticeAttendanceRecord,
+)
 
 @admin.register(AttendanceRecord)
 class AttendanceRecordAdmin(admin.ModelAdmin):
@@ -87,3 +91,23 @@ class AttendanceChangeLogAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+    
+
+@admin.register(SelfPracticeAttendanceRecord)
+class SelfPracticeAttendanceRecordAdmin(admin.ModelAdmin):
+    list_display = [
+        "student",
+        "self_practice_session",
+        "status",
+        "recorded_by",
+        "recorded_at",
+    ]
+    list_filter = [
+        "status",
+        "recorded_at",
+    ]
+    search_fields = [
+        "student__username",
+        "student__student_profile__registration_number",
+        "self_practice_session__module_offering__module__code",
+    ]
