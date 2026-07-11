@@ -8,6 +8,7 @@ class ImporterType(models.TextChoices):
     MODULES = "MODULES", "Modules"
     PROCEDURES = "PROCEDURES", "Procedures"
     LAB_ROOMS = "LAB_ROOMS", "Lab rooms"
+    ATTENDANCE = "ATTENDANCE", "Demonstration attendance"
 
 
 class ImportBatchStatus(models.TextChoices):

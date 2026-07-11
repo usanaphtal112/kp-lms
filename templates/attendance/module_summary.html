@@ -1,0 +1,83 @@
+{% extends "attendance/base.html" %}
+
+{% block title %}Module Attendance Summary | KP-HSLMS{% endblock %}
+
+{% block attendance_content %}
+<section class="attendance-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Module attendance</p>
+        <h1>{{ offering.module.code }} - {{ offering.module.title }}</h1>
+        <p>{{ offering.cohort }} · {{ offering.academic_year }} · {{ offering.semester }}</p>
+    </div>
+
+    <form method="post" action="{% url 'attendance:refresh_eligibility' offering.pk %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-kp-primary">
+            Refresh eligibility snapshots
+        </button>
+    </form>
+</section>
+
+<div class="card attendance-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Completed sessions</th>
+                    <th>Attended</th>
+                    <th>Excused</th>
+                    <th>Absent</th>
+                    <th>Unmarked</th>
+                    <th>Percentage</th>
+                    <th>Self-practice</th>
+                    <th>OSCE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for summary in summaries %}
+                    <tr>
+                        <td>
+                            <strong>{{ summary.student.get_full_name|default:summary.student.username }}</strong>
+                            <div class="small text-muted">
+                                {{ summary.student.student_profile.registration_number|default:summary.student.username }}
+                            </div>
+                        </td>
+                        <td>{{ summary.total_completed_sessions }}</td>
+                        <td>{{ summary.attended_sessions }}</td>
+                        <td>{{ summary.excused_sessions }}</td>
+                        <td>{{ summary.absent_sessions }}</td>
+                        <td>{{ summary.unmarked_sessions }}</td>
+                        <td>
+                            <strong>{{ summary.attendance_percentage }}%</strong>
+                            <div class="small text-muted">
+                                Required: {{ summary.required_percentage }}%
+                            </div>
+                        </td>
+                        <td>
+                            {% if summary.is_self_practice_eligible %}
+                                <span class="badge text-bg-success">Eligible</span>
+                            {% else %}
+                                <span class="badge text-bg-warning">Not eligible</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if summary.is_osce_eligible %}
+                                <span class="badge text-bg-success">Eligible</span>
+                            {% else %}
+                                <span class="badge text-bg-warning">Not eligible</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="9" class="text-center text-muted py-4">
+                            No enrolled students found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

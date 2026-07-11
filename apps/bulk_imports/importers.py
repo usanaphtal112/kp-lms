@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.db import transaction
 
@@ -17,7 +18,9 @@ from apps.accounts.services import (
     create_staff_account,
     create_student_account,
 )
-from apps.labs.models import LabRoom
+from apps.labs.models import LabRoom, DemonstrationSession
+from apps.attendance.models import AttendanceRecord, AttendanceStatus
+from apps.attendance.services import refresh_module_offering_eligibility
 
 
 def get_value(row, key, default=""):
@@ -323,6 +326,75 @@ class LabRoomImporter(BaseImporter):
             location=get_value(row, "location"),
             capacity=get_int(row, "capacity", default=0) or 0,
         )
+    
+class AttendanceImporter(BaseImporter):
+    required_columns = {
+        "demonstration_session_id",
+        "registration_number",
+        "status",
+    }
+
+    def validate_row(self, row):
+        errors = super().validate_row(row)
+
+        session_id = get_value(row, "demonstration_session_id")
+        registration_number = get_value(row, "registration_number").upper()
+        status = get_value(row, "status").upper()
+
+        session = DemonstrationSession.objects.filter(pk=session_id).first()
+
+        if not session:
+            errors.append("demonstration_session_id does not exist.")
+
+        if status not in AttendanceStatus.values:
+            errors.append("Invalid attendance status.")
+
+        profile = StudentProfile.objects.filter(
+            registration_number=registration_number
+        ).select_related("user").first()
+
+        if not profile:
+            errors.append("registration_number does not exist.")
+
+        if session and profile:
+            enrolled = profile.user.module_enrollments.filter(
+                module_offering=session.module_offering,
+                is_active=True,
+            ).exists()
+
+            if not enrolled:
+                errors.append(
+                    "Student is not enrolled in this demonstration's module offering."
+                )
+
+        return errors
+
+    @transaction.atomic
+    def import_row(self, row):
+        session = DemonstrationSession.objects.select_related(
+            "module_offering"
+        ).get(
+            pk=get_value(row, "demonstration_session_id")
+        )
+
+        profile = StudentProfile.objects.select_related("user").get(
+            registration_number=get_value(row, "registration_number").upper()
+        )
+
+        record, _ = AttendanceRecord.objects.update_or_create(
+            student=profile.user,
+            demonstration_session=session,
+            defaults={
+                "status": get_value(row, "status").upper(),
+                "remarks": get_value(row, "remarks"),
+                "recorded_by": self.actor,
+                "recorded_at": timezone.now(),
+            },
+        )
+
+        refresh_module_offering_eligibility(session.module_offering)
+
+        return record
 
 
 IMPORTER_REGISTRY = {
@@ -331,6 +403,7 @@ IMPORTER_REGISTRY = {
     "MODULES": ModuleImporter,
     "PROCEDURES": ProcedureImporter,
     "LAB_ROOMS": LabRoomImporter,
+    "ATTENDANCE": AttendanceImporter,
 }
 
 

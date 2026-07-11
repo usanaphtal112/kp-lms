@@ -51,7 +51,7 @@ LOCAL_APPS = [
     "apps.academics.apps.AcademicsConfig",
     "apps.labs.apps.LabsConfig",
     "apps.bookings.apps.BookingsConfig",
-    # "apps.attendance.apps.AttendanceConfig",
+    "apps.attendance.apps.AttendanceConfig",
     # "apps.assessments.apps.AssessmentsConfig",
     # "apps.inventory.apps.InventoryConfig",
     # "apps.reports.apps.ReportsConfig",

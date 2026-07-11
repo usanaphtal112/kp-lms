@@ -52,10 +52,17 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Attendance",
-        "url_name": None,
-        "href": "#",
+        "url_name": "attendance:dashboard",
+        "href": None,
         "match": "/attendance/",
-        "roles": ["LECTURER", "ADMINISTRATION", "STUDENT"],
+        "roles": ["LECTURER", "LAB_COORDINATOR", "ADMINISTRATION", "IT_ADMIN"],
+    },
+    {
+        "label": "My Attendance",
+        "url_name": "attendance:my_attendance",
+        "href": None,
+        "match": "/attendance/my-attendance/",
+        "roles": ["STUDENT"],
     },
     {
         "label": "Self-Practice",
@@ -137,6 +144,12 @@ DASHBOARD_CARDS = {
             "href": "#",
         },
         {
+            "title": "Attendance",
+            "value": "Mark",
+            "description": "Record demonstration attendance and monitor eligibility.",
+            "href": "/attendance/sessions/",
+        },
+        {
             "title": "Self-Practice",
             "value": "Supervise",
             "description": "Verify student practice and procedures performed.",
@@ -194,7 +207,7 @@ DASHBOARD_CARDS = {
             "title": "Attendance",
             "value": "80%",
             "description": "Track demonstration attendance and eligibility.",
-            "href": "#",
+            "href": "/attendance/my-attendance/",
         },
         {
             "title": "Self-Practice",

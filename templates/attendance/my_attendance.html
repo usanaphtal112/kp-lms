@@ -1,0 +1,65 @@
+{% extends "attendance/base.html" %}
+
+{% block title %}My Attendance | KP-HSLMS{% endblock %}
+
+{% block attendance_content %}
+<section class="attendance-header">
+    <p class="kp-eyebrow">Student attendance</p>
+    <h1>My Attendance</h1>
+    <p>Track your demonstration attendance and eligibility for self-practice and OSCE.</p>
+</section>
+
+<div class="row g-4">
+    {% for summary in summaries %}
+        <div class="col-lg-6">
+            <article class="attendance-student-card">
+                <div class="d-flex justify-content-between gap-3">
+                    <div>
+                        <h2>{{ summary.module_offering.module.code }}</h2>
+                        <p>{{ summary.module_offering.module.title }}</p>
+                    </div>
+
+                    <div class="attendance-percentage">
+                        {{ summary.attendance_percentage }}%
+                    </div>
+                </div>
+
+                <dl class="row mt-3 mb-0">
+                    <dt class="col-sm-6">Completed sessions</dt>
+                    <dd class="col-sm-6">{{ summary.total_completed_sessions }}</dd>
+
+                    <dt class="col-sm-6">Attended</dt>
+                    <dd class="col-sm-6">{{ summary.attended_sessions }}</dd>
+
+                    <dt class="col-sm-6">Required</dt>
+                    <dd class="col-sm-6">{{ summary.required_percentage }}%</dd>
+
+                    <dt class="col-sm-6">Self-practice</dt>
+                    <dd class="col-sm-6">
+                        {% if summary.is_self_practice_eligible %}
+                            <span class="badge text-bg-success">Eligible</span>
+                        {% else %}
+                            <span class="badge text-bg-warning">Not eligible</span>
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-6">OSCE</dt>
+                    <dd class="col-sm-6">
+                        {% if summary.is_osce_eligible %}
+                            <span class="badge text-bg-success">Eligible</span>
+                        {% else %}
+                            <span class="badge text-bg-warning">Not eligible</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No module attendance records are available yet.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

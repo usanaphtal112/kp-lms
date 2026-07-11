@@ -33,7 +33,7 @@ urlpatterns = [
     path("academics/", include("apps.academics.urls")),
     path("labs/", include("apps.labs.urls")),
     path("bookings/", include("apps.bookings.urls")),
-    # path("attendance/", include("apps.attendance.urls")),
+    path("attendance/", include("apps.attendance.urls")),
     # path("assessments/", include("apps.assessments.urls")),
     # path("inventory/", include("apps.inventory.urls")),
     # path("reports/", include("apps.reports.urls")),

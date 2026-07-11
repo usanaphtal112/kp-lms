@@ -1,0 +1,56 @@
+{% extends "attendance/base.html" %}
+
+{% block title %}Attendance | KP-HSLMS{% endblock %}
+
+{% block attendance_content %}
+<section class="attendance-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Attendance tracking</p>
+        <h1>Attendance Dashboard</h1>
+        <p>Mark demonstration attendance and monitor self-practice / OSCE eligibility.</p>
+    </div>
+
+    <a href="{% url 'attendance:session_list' %}" class="btn btn-kp-primary">
+        Mark attendance
+    </a>
+</section>
+
+<div class="row g-4">
+    <div class="col-md-3">
+        <div class="attendance-stat-card">
+            <span>Scheduled</span>
+            <strong>{{ scheduled_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="attendance-stat-card">
+            <span>Completed</span>
+            <strong>{{ completed_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="attendance-stat-card">
+            <span>Need marking</span>
+            <strong>{{ unmarked_count }}</strong>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="attendance-stat-card">
+            <span>Eligible snapshots</span>
+            <strong>{{ eligible_count }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4 d-flex flex-wrap gap-2">
+    <a href="{% url 'attendance:session_list' %}" class="btn btn-outline-secondary">
+        Demonstration sessions
+    </a>
+    <a href="{% url 'attendance:eligibility_list' %}" class="btn btn-outline-secondary">
+        Eligibility monitor
+    </a>
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+.attendance-header {
+    margin-bottom: 1.5rem;
+}
+
+.attendance-header h1 {
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.attendance-header p {
+    color: var(--kp-muted);
+    margin-bottom: 0;
+}
+
+.attendance-stat-card,
+.attendance-filter-card,
+.attendance-table-card,
+.attendance-form-card,
+.attendance-student-card {
+    border: 1px solid var(--kp-border);
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    box-shadow: var(--kp-shadow);
+}
+
+.attendance-stat-card {
+    padding: 1.5rem;
+}
+
+.attendance-stat-card span {
+    display: block;
+    color: var(--kp-muted);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    font-weight: 800;
+}
+
+.attendance-stat-card strong {
+    display: block;
+    font-size: 2rem;
+    color: var(--kp-dark);
+}
+
+.attendance-table-card,
+.attendance-form-card {
+    overflow: hidden;
+}
+
+.attendance-table-card table th {
+    color: var(--kp-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.attendance-form-card .card-footer,
+.attendance-table-card .card-footer {
+    background: #ffffff;
+    border-top: 1px solid var(--kp-border);
+}
+
+.attendance-student-card {
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.attendance-student-card h2 {
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.attendance-student-card p {
+    color: var(--kp-muted);
+    margin-bottom: 0;
+}
+
+.attendance-percentage {
+    min-width: 5rem;
+    height: 5rem;
+    border-radius: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(49, 176, 213, 0.12);
+    color: var(--kp-primary-dark);
+    font-weight: 900;
+    font-size: 1.35rem;
+}
