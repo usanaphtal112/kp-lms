@@ -92,10 +92,15 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "OSCE Assessments",
-        "url_name": None,
-        "href": "#",
+        "url_name": "assessments:dashboard",
+        "href": None,
         "match": "/assessments/",
-        "roles": ["LECTURER", "ADMINISTRATION", "STUDENT"],
+        "roles": [
+            "LECTURER",
+            "ADMINISTRATION",
+            "IT_ADMIN",
+            "STUDENT",
+        ],
     },
     {
         "label": "Inventory",
@@ -178,7 +183,7 @@ DASHBOARD_CARDS = {
             "title": "OSCE Marks",
             "value": "Enter",
             "description": "Record OSCE station scores and export marks.",
-            "href": "#",
+            "href": "/assessments/attempts/",
         },
     ],
     "LAB_COORDINATOR": [
@@ -212,7 +217,7 @@ DASHBOARD_CARDS = {
             "title": "OSCE Approval",
             "value": "Approve",
             "description": "Approve final OSCE marks before publication.",
-            "href": "#",
+            "href": "/assessments/exams/",
         },
         {
             "title": "Reports",
@@ -238,7 +243,7 @@ DASHBOARD_CARDS = {
             "title": "OSCE Results",
             "value": "View",
             "description": "View published OSCE marks and retake status.",
-            "href": "#",
+            "href": "/assessments/my-results/",
         },
     ],
 }

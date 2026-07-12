@@ -1,0 +1,41 @@
+{% extends "assessments/base.html" %}
+
+{% block title %}Request Retake | KP-HSLMS{% endblock %}
+
+{% block assessments_content %}
+<section class="assessment-header">
+    <p class="kp-eyebrow">Retake request</p>
+    <h1>Request OSCE Retake</h1>
+    <p>Submit your reason for requesting a retake.</p>
+</section>
+
+<form method="post" class="card assessment-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'assessments:my_results' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Submit request
+        </button>
+    </div>
+</form>
+{% endblock %}

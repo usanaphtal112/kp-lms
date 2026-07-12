@@ -1,0 +1,65 @@
+{% extends "assessments/base.html" %}
+
+{% block title %}OSCE Assessments | KP-HSLMS{% endblock %}
+
+{% block assessments_content %}
+<section class="assessment-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">OSCE assessment</p>
+        <h1>OSCE Dashboard</h1>
+        <p>Manage OSCE exams, stations, rubrics, marks, approvals, results, and retakes.</p>
+    </div>
+
+    {% if request.user.role != "STUDENT" %}
+        <a href="{% url 'assessments:exam_create' %}" class="btn btn-kp-primary">
+            Create OSCE exam
+        </a>
+    {% endif %}
+</section>
+
+{% if request.user.role == "STUDENT" %}
+    <div class="row g-4">
+        <div class="col-md-6">
+            <a href="{% url 'assessments:my_results' %}" class="assessment-card">
+                <span>My attempts</span>
+                <strong>{{ my_attempt_count|default:0 }}</strong>
+                <p>View published OSCE results and retake status.</p>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{% url 'assessments:my_results' %}" class="assessment-card">
+                <span>Published results</span>
+                <strong>{{ my_published_result_count|default:0 }}</strong>
+                <p>Only approved and published results are visible.</p>
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{% url 'assessments:exam_list' %}" class="assessment-card">
+                <span>OSCE exams</span>
+                <strong>{{ exam_count }}</strong>
+                <p>Create exams, stations, and rubrics.</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'assessments:attempt_list' %}" class="assessment-card">
+                <span>Attempts</span>
+                <strong>{{ attempt_count }}</strong>
+                <p>Mark student OSCE attempts.</p>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'assessments:retake_request_list' %}" class="assessment-card">
+                <span>Retake requests</span>
+                <strong>{{ pending_retake_count }}</strong>
+                <p>Approve or reject failed-student retake requests.</p>
+            </a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

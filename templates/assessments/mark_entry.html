@@ -1,0 +1,57 @@
+{% extends "assessments/base.html" %}
+
+{% block title %}OSCE Mark Entry | KP-HSLMS{% endblock %}
+
+{% block assessments_content %}
+<section class="assessment-header">
+    <p class="kp-eyebrow">OSCE marks</p>
+    <h1>Mark OSCE Attempt</h1>
+    <p>
+        {{ attempt.student.get_full_name|default:attempt.student.username }}
+        · {{ attempt.osce_exam.title }}
+        · {{ attempt.get_attempt_type_display }}
+    </p>
+</section>
+
+<form method="post" class="card assessment-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'assessments:attempt_list_by_exam' attempt.osce_exam.pk %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Save marks
+        </button>
+    </div>
+</form>
+{% endblock %}

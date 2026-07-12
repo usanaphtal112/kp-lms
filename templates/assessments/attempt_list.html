@@ -1,0 +1,67 @@
+{% extends "assessments/base.html" %}
+
+{% block title %}OSCE Attempts | KP-HSLMS{% endblock %}
+
+{% block assessments_content %}
+<section class="assessment-header">
+    <p class="kp-eyebrow">OSCE attempts</p>
+    <h1>OSCE Attempts</h1>
+    <p>Enter marks and monitor calculated results.</p>
+</section>
+
+<div class="card assessment-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Exam</th>
+                    <th>Attempt</th>
+                    <th>Status</th>
+                    <th>Percentage</th>
+                    <th>Final mark</th>
+                    <th>Passed</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for attempt in attempts %}
+                    <tr>
+                        <td>
+                            <strong>{{ attempt.student.get_full_name|default:attempt.student.username }}</strong>
+                            <div class="small text-muted">
+                                {{ attempt.student.student_profile.registration_number|default:attempt.student.username }}
+                            </div>
+                        </td>
+                        <td>{{ attempt.osce_exam.title }}</td>
+                        <td>{{ attempt.attempt_number }} · {{ attempt.get_attempt_type_display }}</td>
+                        <td>{{ attempt.get_status_display }}</td>
+                        <td>{{ attempt.result.percentage|default:"—" }}</td>
+                        <td>{{ attempt.result.final_mark|default:"—" }}</td>
+                        <td>
+                            {% if attempt.result and attempt.result.is_passed %}
+                                <span class="badge text-bg-success">Passed</span>
+                            {% elif attempt.result %}
+                                <span class="badge text-bg-danger">Failed</span>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'assessments:mark_entry' attempt.pk %}" class="btn btn-sm btn-outline-secondary">
+                                Mark
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center text-muted py-4">
+                            No OSCE attempts found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

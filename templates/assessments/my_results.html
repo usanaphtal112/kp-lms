@@ -1,0 +1,69 @@
+{% extends "assessments/base.html" %}
+
+{% block title %}My OSCE Results | KP-HSLMS{% endblock %}
+
+{% block assessments_content %}
+<section class="assessment-header">
+    <p class="kp-eyebrow">Student results</p>
+    <h1>My OSCE Results</h1>
+    <p>Only approved and published results are displayed here.</p>
+</section>
+
+<div class="row g-4">
+    {% for result in results %}
+        <div class="col-lg-6">
+            <article class="assessment-result-card">
+                <div class="d-flex justify-content-between gap-3">
+                    <div>
+                        <h2>{{ result.attempt.osce_exam.module_offering.module.code }}</h2>
+                        <p>{{ result.attempt.osce_exam.title }}</p>
+                    </div>
+
+                    <div class="assessment-mark">
+                        {{ result.final_mark }}%
+                    </div>
+                </div>
+
+                <dl class="row mt-3 mb-0">
+                    <dt class="col-sm-5">Attempt</dt>
+                    <dd class="col-sm-7">
+                        {{ result.attempt.attempt_number }} · {{ result.attempt.get_attempt_type_display }}
+                    </dd>
+
+                    <dt class="col-sm-5">Raw percentage</dt>
+                    <dd class="col-sm-7">{{ result.percentage }}%</dd>
+
+                    <dt class="col-sm-5">Final mark</dt>
+                    <dd class="col-sm-7">{{ result.final_mark }}%</dd>
+
+                    <dt class="col-sm-5">Pass mark</dt>
+                    <dd class="col-sm-7">{{ result.pass_mark }}%</dd>
+
+                    <dt class="col-sm-5">Status</dt>
+                    <dd class="col-sm-7">
+                        {% if result.is_passed %}
+                            <span class="badge text-bg-success">Passed</span>
+                        {% else %}
+                            <span class="badge text-bg-danger">Failed</span>
+                        {% endif %}
+                    </dd>
+                </dl>
+
+                {% if not result.is_passed %}
+                    <div class="mt-3">
+                        <a href="{% url 'assessments:retake_request_create' result.attempt.pk %}" class="btn btn-outline-secondary">
+                            Request retake
+                        </a>
+                    </div>
+                {% endif %}
+            </article>
+        </div>
+    {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info">
+                No published OSCE results are available yet.
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
