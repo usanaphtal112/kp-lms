@@ -1,0 +1,48 @@
+{% extends "reports/base.html" %}
+
+{% block title %}Review Report | KP-HSLMS{% endblock %}
+
+{% block reports_content %}
+<section class="reports-header">
+    <p class="kp-eyebrow">Report review</p>
+    <h1>Review {{ report_kind }}</h1>
+    <p>{{ report_object.title }}</p>
+</section>
+
+<form method="post" class="card report-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                </label>
+
+                {{ field }}
+
+                {% if field.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'reports:dashboard' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Save review
+        </button>
+    </div>
+</form>
+{% endblock %}

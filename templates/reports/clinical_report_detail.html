@@ -1,0 +1,109 @@
+{% extends "reports/base.html" %}
+
+{% block title %}{{ report.title }} | KP-HSLMS{% endblock %}
+
+{% block reports_content %}
+<section class="reports-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Clinical report detail</p>
+        <h1>{{ report.title }}</h1>
+        <p>{{ report.student.get_full_name|default:report.student.username }} · {{ report.get_status_display }}</p>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+        {% if request.user == report.student %}
+            {% if report.status == "DRAFT" or report.status == "REVISION_REQUESTED" %}
+                <a href="{% url 'reports:clinical_report_update' report.pk %}" class="btn btn-outline-secondary">
+                    Edit
+                </a>
+
+                <form method="post" action="{% url 'reports:clinical_report_submit' report.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-kp-primary">
+                        Submit
+                    </button>
+                </form>
+            {% endif %}
+        {% endif %}
+
+        {% if request.user.role == "LECTURER" or request.user.role == "ADMINISTRATION" or request.user.role == "IT_ADMIN" %}
+            {% if report.status == "SUBMITTED" or report.status == "UNDER_REVIEW" %}
+                <a href="{% url 'reports:clinical_report_review' report.pk %}" class="btn btn-kp-primary">
+                    Review
+                </a>
+            {% endif %}
+        {% endif %}
+
+        {% if report.attachment %}
+            <a href="{% url 'reports:clinical_report_download' report.pk %}" class="btn btn-outline-secondary">
+                Download attachment
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="report-panel">
+            <h2>Report content</h2>
+
+            <dl class="row">
+                <dt class="col-sm-4">Module</dt>
+                <dd class="col-sm-8">{{ report.module_offering }}</dd>
+
+                <dt class="col-sm-4">Facility</dt>
+                <dd class="col-sm-8">{{ report.facility_name }}</dd>
+
+                <dt class="col-sm-4">Unit</dt>
+                <dd class="col-sm-8">{{ report.department_or_unit|default:"—" }}</dd>
+
+                <dt class="col-sm-4">Dates</dt>
+                <dd class="col-sm-8">
+                    {{ report.clinical_start_date }}
+                    {% if report.clinical_end_date %}
+                        → {{ report.clinical_end_date }}
+                    {% endif %}
+                </dd>
+            </dl>
+
+            <h3>Activities performed</h3>
+            <p>{{ report.activities_performed|linebreaks }}</p>
+
+            <h3>Skills practiced</h3>
+            <p>{{ report.skills_practiced|default:"—"|linebreaks }}</p>
+
+            <h3>Reflection</h3>
+            <p>{{ report.reflection|default:"—"|linebreaks }}</p>
+
+            <h3>Challenges</h3>
+            <p>{{ report.challenges|default:"—"|linebreaks }}</p>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="report-panel">
+            <h2>Review information</h2>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-5">Status</dt>
+                <dd class="col-sm-7">{{ report.get_status_display }}</dd>
+
+                <dt class="col-sm-5">Submitted at</dt>
+                <dd class="col-sm-7">{{ report.submitted_at|default:"—" }}</dd>
+
+                <dt class="col-sm-5">Reviewed by</dt>
+                <dd class="col-sm-7">{{ report.reviewed_by|default:"—" }}</dd>
+
+                <dt class="col-sm-5">Reviewed at</dt>
+                <dd class="col-sm-7">{{ report.reviewed_at|default:"—" }}</dd>
+            </dl>
+
+            {% if report.review_comments %}
+                <hr>
+                <h3>Review comments</h3>
+                <p>{{ report.review_comments|linebreaks }}</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

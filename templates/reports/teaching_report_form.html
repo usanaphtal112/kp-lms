@@ -1,0 +1,54 @@
+{% extends "reports/base.html" %}
+
+{% block title %}Report Form | KP-HSLMS{% endblock %}
+
+{% block reports_content %}
+<section class="reports-header">
+    <p class="kp-eyebrow">Report form</p>
+    <h1>Report Form</h1>
+    <p>Complete the form below and save your report.</p>
+</section>
+
+<form method="post" enctype="multipart/form-data" class="card report-form-card" novalidate>
+    {% csrf_token %}
+
+    <div class="card-body">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="row g-3">
+            {% for field in form %}
+                <div class="col-md-6">
+                    <label class="form-label" for="{{ field.id_for_label }}">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                        <div class="form-text">{{ field.help_text }}</div>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback d-block">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card-footer d-flex justify-content-between">
+        <a href="{% url 'reports:dashboard' %}" class="btn btn-outline-secondary">
+            Cancel
+        </a>
+        <button type="submit" class="btn btn-kp-primary">
+            Save
+        </button>
+    </div>
+</form>
+{% endblock %}

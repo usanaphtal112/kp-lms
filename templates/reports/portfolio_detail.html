@@ -1,0 +1,142 @@
+{% extends "reports/base.html" %}
+
+{% block title %}Portfolio | KP-HSLMS{% endblock %}
+
+{% block reports_content %}
+<section class="reports-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Student portfolio</p>
+        <h1>{{ portfolio_student.get_full_name|default:portfolio_student.username }}</h1>
+        <p>{{ portfolio_student.student_profile.registration_number|default:portfolio_student.username }}</p>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+        {% if request.user.role == "STUDENT" %}
+            <a href="{% url 'reports:my_portfolio_item_create' %}" class="btn btn-outline-secondary">
+                Add evidence
+            </a>
+            <a href="{% url 'reports:my_portfolio_export' %}" class="btn btn-kp-primary">
+                Export portfolio
+            </a>
+        {% else %}
+            <a href="{% url 'reports:student_portfolio_item_create' portfolio_student.pk %}" class="btn btn-outline-secondary">
+                Add evidence
+            </a>
+            <a href="{% url 'reports:student_portfolio_export' portfolio_student.pk %}" class="btn btn-kp-primary">
+                Export portfolio
+            </a>
+        {% endif %}
+    </div>
+</section>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="report-panel">
+            <h2>Attendance eligibility</h2>
+
+            <div class="list-group list-group-flush">
+                {% for snapshot in summary.attendance_snapshots %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ snapshot.module_offering.module.code }}</strong>
+                        <div class="small text-muted">
+                            Attendance: {{ snapshot.attendance_percentage }}%
+                            · Self-practice:
+                            {% if snapshot.is_self_practice_eligible %}Eligible{% else %}Not eligible{% endif %}
+                            · OSCE:
+                            {% if snapshot.is_osce_eligible %}Eligible{% else %}Not eligible{% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">No attendance snapshots yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="report-panel">
+            <h2>Procedure logs</h2>
+
+            <div class="list-group list-group-flush">
+                {% for log in summary.procedure_logs %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ log.procedure.code }} - {{ log.procedure.name }}</strong>
+                        <div class="small text-muted">
+                            {{ log.module_offering.module.code }}
+                            · {{ log.get_status_display }}
+                            · Verified by {{ log.verified_by|default:"—" }}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">No procedure logs yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="report-panel">
+            <h2>OSCE results</h2>
+
+            <div class="list-group list-group-flush">
+                {% for result in summary.osce_results %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ result.attempt.osce_exam.title }}</strong>
+                        <div class="small text-muted">
+                            {{ result.attempt.osce_exam.module_offering.module.code }}
+                            · Final mark: {{ result.final_mark }}%
+                            · {% if result.is_passed %}Passed{% else %}Failed{% endif %}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">No published OSCE results yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="report-panel">
+            <h2>Clinical reports</h2>
+
+            <div class="list-group list-group-flush">
+                {% for report in summary.clinical_reports %}
+                    <div class="list-group-item px-0">
+                        <strong>{{ report.title }}</strong>
+                        <div class="small text-muted">
+                            {{ report.module_offering.module.code }}
+                            · {{ report.facility_name }}
+                            · {{ report.get_status_display }}
+                        </div>
+                    </div>
+                {% empty %}
+                    <p class="text-muted mb-0">No clinical reports yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="report-panel mt-4">
+    <h2>Manual portfolio evidence</h2>
+
+    <div class="list-group list-group-flush">
+        {% for item in summary.manual_items %}
+            <div class="list-group-item px-0">
+                <strong>{{ item.title }}</strong>
+                <div class="small text-muted">
+                    {{ item.get_item_type_display }}
+                    {% if item.module_offering %}
+                        · {{ item.module_offering.module.code }}
+                    {% endif %}
+                </div>
+                {% if item.description %}
+                    <p class="mb-0 mt-1">{{ item.description }}</p>
+                {% endif %}
+            </div>
+        {% empty %}
+            <p class="text-muted mb-0">No manual evidence added yet.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

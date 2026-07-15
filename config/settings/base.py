@@ -54,7 +54,7 @@ LOCAL_APPS = [
     "apps.attendance.apps.AttendanceConfig",
     "apps.assessments.apps.AssessmentsConfig",
     "apps.inventory.apps.InventoryConfig",
-    # "apps.reports.apps.ReportsConfig",
+    "apps.reports.apps.ReportsConfig",
     # "apps.notification.apps.NotificationsConfig",
     "apps.bulk_imports.apps.BulkImportsConfig",
 ]
@@ -196,4 +196,14 @@ KPLMS_DEFAULT_STAFF_PASSWORD = config(
 KPLMS_MAX_IMPORT_FILE_SIZE_MB = config(
     "KPLMS_MAX_IMPORT_FILE_SIZE_MB",
     default=5, cast=int
+)
+
+KPLMS_MAX_REPORT_UPLOAD_SIZE_MB = config(
+    "KPLMS_MAX_REPORT_UPLOAD_SIZE_MB",
+    default=10, cast=int
+)
+
+KPLMS_ALLOWED_REPORT_EXTENSIONS = config(
+    "KPLMS_ALLOWED_REPORT_EXTENSIONS",
+    default=["pdf", "doc", "docx", "xls", "xlsx", "jpg", "jpeg", "png"], cast=list
 )

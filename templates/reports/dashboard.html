@@ -1,0 +1,91 @@
+{% extends "reports/base.html" %}
+
+{% block title %}Reports & Portfolio | KP-HSLMS{% endblock %}
+
+{% block reports_content %}
+<section class="reports-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Reports and portfolio</p>
+        <h1>Reports Dashboard</h1>
+        <p>Manage clinical reports, clinical teaching reports, reviews, downloads, and student portfolios.</p>
+    </div>
+</section>
+
+{% if request.user.role == "STUDENT" %}
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{% url 'reports:clinical_report_list' %}" class="report-card">
+                <span>My clinical reports</span>
+                <strong>{{ my_clinical_reports_count|default:0 }}</strong>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'reports:clinical_report_create' %}" class="report-card">
+                <span>Submit report</span>
+                <strong>New</strong>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'reports:my_portfolio' %}" class="report-card">
+                <span>Portfolio</span>
+                <strong>View</strong>
+            </a>
+        </div>
+    </div>
+{% elif request.user.role == "LECTURER" %}
+    <div class="row g-4">
+        <div class="col-md-4">
+            <a href="{% url 'reports:clinical_report_list' %}" class="report-card">
+                <span>Clinical reports to review</span>
+                <strong>{{ clinical_reports_to_review_count|default:0 }}</strong>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'reports:teaching_report_list' %}" class="report-card">
+                <span>My teaching reports</span>
+                <strong>{{ my_teaching_reports_count|default:0 }}</strong>
+            </a>
+        </div>
+
+        <div class="col-md-4">
+            <a href="{% url 'reports:teaching_report_create' %}" class="report-card">
+                <span>Create teaching report</span>
+                <strong>New</strong>
+            </a>
+        </div>
+    </div>
+{% else %}
+    <div class="row g-4">
+        <div class="col-md-3">
+            <a href="{% url 'reports:clinical_report_list' %}" class="report-card">
+                <span>Clinical reports</span>
+                <strong>{{ clinical_reports_count|default:0 }}</strong>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'reports:teaching_report_list' %}" class="report-card">
+                <span>Teaching reports</span>
+                <strong>{{ teaching_reports_count|default:0 }}</strong>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'reports:clinical_report_export' %}" class="report-card">
+                <span>Clinical export</span>
+                <strong>Excel</strong>
+            </a>
+        </div>
+
+        <div class="col-md-3">
+            <a href="{% url 'reports:teaching_report_export' %}" class="report-card">
+                <span>Teaching export</span>
+                <strong>Excel</strong>
+            </a>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

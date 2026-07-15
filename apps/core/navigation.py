@@ -115,11 +115,17 @@ SIDEBAR_ITEMS = [
         ],
     },
     {
-        "label": "Clinical Reports",
-        "url_name": None,
-        "href": "#",
+        "label": "Reports & Portfolio",
+        "url_name": "reports:dashboard",
+        "href": None,
         "match": "/reports/",
-        "roles": ["LECTURER", "ADMINISTRATION", "STUDENT"],
+        "roles": [
+            "STUDENT",
+            "LECTURER",
+            "LAB_COORDINATOR",
+            "ADMINISTRATION",
+            "IT_ADMIN",
+        ],
     },
     {
         "label": "Users & Permissions",
@@ -196,6 +202,12 @@ DASHBOARD_CARDS = {
             "description": "Submit consumables and equipment used during sessions.",
             "href": "/inventory/usages/create/",
         },
+        {
+            "title": "Clinical Reports",
+            "value": "Review",
+            "description": "Review student clinical reports and submit clinical teaching reports.",
+            "href": "/reports/",
+        },
     ],
     "LAB_COORDINATOR": [
         {
@@ -233,8 +245,8 @@ DASHBOARD_CARDS = {
         {
             "title": "Reports",
             "value": "Export",
-            "description": "Download marks, attendance, and clinical reports.",
-            "href": "#",
+            "description": "Download clinical reports, teaching reports, and portfolio records.",
+            "href": "/reports/",
         },
         {
             "title": "Inventory",
@@ -261,6 +273,12 @@ DASHBOARD_CARDS = {
             "value": "View",
             "description": "View published OSCE marks and retake status.",
             "href": "/assessments/my-results/",
+        },
+        {
+            "title": "Portfolio",
+            "value": "View",
+            "description": "View clinical reports, procedures, OSCE results, and practical history.",
+            "href": "/reports/portfolio/",
         },
     ],
 }
