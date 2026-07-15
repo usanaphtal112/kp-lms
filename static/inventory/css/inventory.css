@@ -1,0 +1,74 @@
+.inventory-header {
+    margin-bottom: 1.5rem;
+}
+
+.inventory-header h1 {
+    font-weight: 900;
+    color: var(--kp-dark);
+}
+
+.inventory-header p {
+    color: var(--kp-muted);
+    margin-bottom: 0;
+}
+
+.inventory-card,
+.inventory-panel,
+.inventory-table-card,
+.inventory-form-card,
+.inventory-filter-card {
+    border: 1px solid var(--kp-border);
+    border-radius: var(--kp-radius);
+    background: #ffffff;
+    box-shadow: var(--kp-shadow);
+}
+
+.inventory-card {
+    display: block;
+    height: 100%;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: var(--kp-text);
+}
+
+.inventory-card span {
+    display: block;
+    color: var(--kp-muted);
+    text-transform: uppercase;
+    font-weight: 800;
+    font-size: 0.8rem;
+}
+
+.inventory-card strong {
+    display: block;
+    font-size: 2rem;
+    color: var(--kp-dark);
+}
+
+.inventory-panel {
+    padding: 1.5rem;
+}
+
+.inventory-panel h2 {
+    font-size: 1.15rem;
+    font-weight: 900;
+    color: var(--kp-dark);
+    margin-bottom: 1rem;
+}
+
+.inventory-table-card,
+.inventory-form-card {
+    overflow: hidden;
+}
+
+.inventory-table-card table th {
+    color: var(--kp-muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.inventory-form-card .card-footer {
+    background: #ffffff;
+    border-top: 1px solid var(--kp-border);
+}

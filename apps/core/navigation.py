@@ -104,10 +104,15 @@ SIDEBAR_ITEMS = [
     },
     {
         "label": "Inventory",
-        "url_name": None,
-        "href": "#",
+        "url_name": "inventory:dashboard",
+        "href": None,
         "match": "/inventory/",
-        "roles": ["LECTURER", "LAB_COORDINATOR", "ADMINISTRATION"],
+        "roles": [
+            "LECTURER",
+            "LAB_COORDINATOR",
+            "ADMINISTRATION",
+            "IT_ADMIN",
+        ],
     },
     {
         "label": "Clinical Reports",
@@ -185,6 +190,12 @@ DASHBOARD_CARDS = {
             "description": "Record OSCE station scores and export marks.",
             "href": "/assessments/attempts/",
         },
+        {
+            "title": "Inventory Usage",
+            "value": "Submit",
+            "description": "Submit consumables and equipment used during sessions.",
+            "href": "/inventory/usages/create/",
+        },
     ],
     "LAB_COORDINATOR": [
         {
@@ -203,7 +214,7 @@ DASHBOARD_CARDS = {
             "title": "Inventory Usage",
             "value": "Review",
             "description": "Approve usage and monitor consumables.",
-            "href": "#",
+            "href": "/inventory/usages/",
         },
     ],
     "ADMINISTRATION": [
@@ -224,6 +235,12 @@ DASHBOARD_CARDS = {
             "value": "Export",
             "description": "Download marks, attendance, and clinical reports.",
             "href": "#",
+        },
+        {
+            "title": "Inventory",
+            "value": "Monitor",
+            "description": "Monitor stock levels, low-stock alerts, and usage approvals.",
+            "href": "/inventory/",
         },
     ],
     "STUDENT": [

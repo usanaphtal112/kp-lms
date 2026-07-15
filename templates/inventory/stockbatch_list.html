@@ -1,0 +1,56 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}Stock Batches | KP-HSLMS{% endblock %}
+
+{% block inventory_content %}
+<section class="inventory-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Stock batches</p>
+        <h1>Stock Batches</h1>
+        <p>Track received batches, remaining quantity, and expiry dates.</p>
+    </div>
+
+    <a href="{% url 'inventory:stockbatch_receive' %}" class="btn btn-kp-primary">
+        Receive stock
+    </a>
+</section>
+
+<div class="card inventory-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Batch</th>
+                    <th>Received</th>
+                    <th>Remaining</th>
+                    <th>Expiry</th>
+                    <th>Status</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                    <tr>
+                        <td>{{ batch.stock_item }}</td>
+                        <td>{{ batch.batch_number }}</td>
+                        <td>{{ batch.quantity_received }}</td>
+                        <td>{{ batch.quantity_remaining }}</td>
+                        <td>{{ batch.expiry_date|default:"—" }}</td>
+                        <td>{{ batch.get_status_display }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'inventory:stockbatch_adjust' batch.pk %}" class="btn btn-sm btn-outline-secondary">
+                                Adjust
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center text-muted py-4">No batches found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -69,5 +69,16 @@
 
     <h3>Lab rooms</h3>
     <code>code,name,location,capacity</code>
+    <h3>Inventory categories</h3>
+    <code>code,name,description</code>
+
+    <h3>Suppliers</h3>
+    <code>name,contact_person,phone_number,email,address</code>
+
+    <h3>Stock items</h3>
+    <code>category_code,code,name,item_type,unit,minimum_stock_level,reorder_level,description</code>
+
+    <h3>Stock batches</h3>
+    <code>stock_item_code,batch_number,quantity_received,unit_cost,supplier_name,expiry_date,notes</code>
 </div>
 {% endblock %}

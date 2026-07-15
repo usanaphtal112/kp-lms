@@ -21,6 +21,12 @@ from apps.accounts.services import (
 from apps.labs.models import LabRoom, DemonstrationSession
 from apps.attendance.models import AttendanceRecord, AttendanceStatus
 from apps.attendance.services import refresh_module_offering_eligibility
+from apps.inventory.models import (
+    InventoryCategory,
+    StockItem,
+    Supplier,
+)
+from apps.inventory.services import receive_stock_batch
 
 
 def get_value(row, key, default=""):
@@ -395,6 +401,164 @@ class AttendanceImporter(BaseImporter):
         refresh_module_offering_eligibility(session.module_offering)
 
         return record
+    
+class InventoryCategoryImporter(BaseImporter):
+    required_columns = {
+        "code",
+        "name",
+    }
+
+    def validate_row(self, row):
+        errors = super().validate_row(row)
+
+        code = get_value(row, "code").upper()
+
+        if code and InventoryCategory.objects.filter(code=code).exists():
+            errors.append("Inventory category code already exists.")
+
+        return errors
+
+    @transaction.atomic
+    def import_row(self, row):
+        return InventoryCategory.objects.create(
+            code=get_value(row, "code").upper(),
+            name=get_value(row, "name"),
+            description=get_value(row, "description"),
+        )
+
+
+class SupplierImporter(BaseImporter):
+    required_columns = {
+        "name",
+    }
+
+    def validate_row(self, row):
+        errors = super().validate_row(row)
+
+        name = get_value(row, "name")
+
+        if name and Supplier.objects.filter(name__iexact=name).exists():
+            errors.append("Supplier already exists.")
+
+        return errors
+
+    @transaction.atomic
+    def import_row(self, row):
+        return Supplier.objects.create(
+            name=get_value(row, "name"),
+            contact_person=get_value(row, "contact_person"),
+            phone_number=get_value(row, "phone_number"),
+            email=get_value(row, "email"),
+            address=get_value(row, "address"),
+        )
+
+
+class StockItemImporter(BaseImporter):
+    required_columns = {
+        "category_code",
+        "code",
+        "name",
+        "item_type",
+        "unit",
+    }
+
+    def validate_row(self, row):
+        errors = super().validate_row(row)
+
+        category_code = get_value(row, "category_code").upper()
+        code = get_value(row, "code").upper()
+
+        if not InventoryCategory.objects.filter(code=category_code).exists():
+            errors.append("category_code does not exist.")
+
+        if code and StockItem.objects.filter(code=code).exists():
+            errors.append("Stock item code already exists.")
+
+        return errors
+
+    @transaction.atomic
+    def import_row(self, row):
+        category = InventoryCategory.objects.get(
+            code=get_value(row, "category_code").upper()
+        )
+
+        return StockItem.objects.create(
+            category=category,
+            code=get_value(row, "code").upper(),
+            name=get_value(row, "name"),
+            item_type=get_value(row, "item_type"),
+            unit=get_value(row, "unit"),
+            minimum_stock_level=get_decimal(
+                row,
+                "minimum_stock_level",
+                default=Decimal("0.00"),
+            ),
+            reorder_level=get_decimal(
+                row,
+                "reorder_level",
+                default=Decimal("0.00"),
+            ),
+            description=get_value(row, "description"),
+        )
+
+
+class StockBatchImporter(BaseImporter):
+    required_columns = {
+        "stock_item_code",
+        "batch_number",
+        "quantity_received",
+    }
+
+    def validate_row(self, row):
+        errors = super().validate_row(row)
+
+        stock_item_code = get_value(row, "stock_item_code").upper()
+        batch_number = get_value(row, "batch_number")
+
+        stock_item = StockItem.objects.filter(code=stock_item_code).first()
+
+        if not stock_item:
+            errors.append("stock_item_code does not exist.")
+
+        if stock_item and stock_item.batches.filter(batch_number=batch_number).exists():
+            errors.append("Batch number already exists for this stock item.")
+
+        try:
+            quantity_received = get_decimal(row, "quantity_received")
+            if quantity_received <= 0:
+                errors.append("quantity_received must be greater than zero.")
+        except Exception:
+            errors.append("quantity_received must be a valid number.")
+
+        supplier_name = get_value(row, "supplier_name")
+
+        if supplier_name and not Supplier.objects.filter(name__iexact=supplier_name).exists():
+            errors.append("supplier_name does not exist.")
+
+        return errors
+
+    @transaction.atomic
+    def import_row(self, row):
+        stock_item = StockItem.objects.get(
+            code=get_value(row, "stock_item_code").upper()
+        )
+
+        supplier_name = get_value(row, "supplier_name")
+        supplier = None
+
+        if supplier_name:
+            supplier = Supplier.objects.get(name__iexact=supplier_name)
+
+        return receive_stock_batch(
+            stock_item=stock_item,
+            supplier=supplier,
+            batch_number=get_value(row, "batch_number"),
+            quantity_received=get_decimal(row, "quantity_received"),
+            unit_cost=get_decimal(row, "unit_cost", default=Decimal("0.00")),
+            expiry_date=get_value(row, "expiry_date") or None,
+            received_by=self.actor,
+            notes=get_value(row, "notes"),
+        )
 
 
 IMPORTER_REGISTRY = {
@@ -404,6 +568,10 @@ IMPORTER_REGISTRY = {
     "PROCEDURES": ProcedureImporter,
     "LAB_ROOMS": LabRoomImporter,
     "ATTENDANCE": AttendanceImporter,
+    "INVENTORY_CATEGORIES": InventoryCategoryImporter,
+    "SUPPLIERS": SupplierImporter,
+    "STOCK_ITEMS": StockItemImporter,
+    "STOCK_BATCHES": StockBatchImporter,
 }
 
 

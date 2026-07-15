@@ -53,7 +53,7 @@ LOCAL_APPS = [
     "apps.bookings.apps.BookingsConfig",
     "apps.attendance.apps.AttendanceConfig",
     "apps.assessments.apps.AssessmentsConfig",
-    # "apps.inventory.apps.InventoryConfig",
+    "apps.inventory.apps.InventoryConfig",
     # "apps.reports.apps.ReportsConfig",
     # "apps.notification.apps.NotificationsConfig",
     "apps.bulk_imports.apps.BulkImportsConfig",

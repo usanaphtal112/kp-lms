@@ -9,6 +9,13 @@ class ImporterType(models.TextChoices):
     PROCEDURES = "PROCEDURES", "Procedures"
     LAB_ROOMS = "LAB_ROOMS", "Lab rooms"
     ATTENDANCE = "ATTENDANCE", "Demonstration attendance"
+    INVENTORY_CATEGORIES = "INVENTORY_CATEGORIES", "Inventory categories"
+    SUPPLIERS = "SUPPLIERS", "Suppliers"
+    STOCK_ITEMS = "STOCK_ITEMS", "Stock items"
+    STOCK_BATCHES = "STOCK_BATCHES", "Stock batches"
+
+
+    
 
 
 class ImportBatchStatus(models.TextChoices):

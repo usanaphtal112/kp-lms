@@ -1,0 +1,99 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}Inventory | KP-HSLMS{% endblock %}
+
+{% block inventory_content %}
+<section class="inventory-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Inventory management</p>
+        <h1>Inventory Dashboard</h1>
+        <p>Manage stock, consumables, usage approvals, deductions, and Excel reports.</p>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a href="{% url 'inventory:stockbatch_receive' %}" class="btn btn-kp-primary">
+            Receive stock
+        </a>
+        <a href="{% url 'inventory:export_balances' %}" class="btn btn-outline-secondary">
+            Export balances
+        </a>
+    </div>
+</section>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <a href="{% url 'inventory:stockitem_list' %}" class="inventory-card">
+            <span>Stock items</span>
+            <strong>{{ stock_item_count }}</strong>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'inventory:stockbatch_list' %}" class="inventory-card">
+            <span>Batches</span>
+            <strong>{{ batch_count }}</strong>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'inventory:usage_list' %}" class="inventory-card">
+            <span>Pending usage</span>
+            <strong>{{ submitted_usage_count }}</strong>
+        </a>
+    </div>
+
+    <div class="col-md-3">
+        <a href="{% url 'inventory:low_stock_list' %}" class="inventory-card">
+            <span>Low-stock alerts</span>
+            <strong>{{ low_stock_count }}</strong>
+        </a>
+    </div>
+</div>
+
+<div class="inventory-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Recent balances</h2>
+        <a href="{% url 'inventory:stockitem_list' %}" class="btn btn-sm btn-outline-secondary">
+            View all
+        </a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Available</th>
+                    <th>Minimum</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in balances %}
+                    <tr>
+                        <td>
+                            <strong>{{ row.stock_item.name }}</strong>
+                            <div class="small text-muted">{{ row.stock_item.code }}</div>
+                        </td>
+                        <td>{{ row.available_quantity }} {{ row.stock_item.get_unit_display }}</td>
+                        <td>{{ row.minimum_stock_level }}</td>
+                        <td>
+                            {% if row.is_low_stock %}
+                                <span class="badge text-bg-danger">Low stock</span>
+                            {% else %}
+                                <span class="badge text-bg-success">OK</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            No stock items found.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

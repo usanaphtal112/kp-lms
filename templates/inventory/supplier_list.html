@@ -1,0 +1,52 @@
+{% extends "inventory/base.html" %}
+
+{% block title %}Suppliers | KP-HSLMS{% endblock %}
+
+{% block inventory_content %}
+<section class="inventory-header d-flex justify-content-between align-items-start gap-3">
+    <div>
+        <p class="kp-eyebrow">Suppliers</p>
+        <h1>Suppliers</h1>
+        <p>Manage inventory suppliers.</p>
+    </div>
+
+    <a href="{% url 'inventory:supplier_create' %}" class="btn btn-kp-primary">
+        Create supplier
+    </a>
+</section>
+
+<div class="card inventory-table-card">
+    <div class="table-responsive">
+        <table class="table align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact person</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for supplier in suppliers %}
+                    <tr>
+                        <td>{{ supplier.name }}</td>
+                        <td>{{ supplier.contact_person|default:"—" }}</td>
+                        <td>{{ supplier.phone_number|default:"—" }}</td>
+                        <td>{{ supplier.email|default:"—" }}</td>
+                        <td class="text-end">
+                            <a href="{% url 'inventory:supplier_update' supplier.pk %}" class="btn btn-sm btn-outline-secondary">
+                                Edit
+                            </a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-4">No suppliers found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
