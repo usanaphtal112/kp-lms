@@ -1,23 +1,17 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from apps.core.permissions import require_role
 
 from .models import UserRole
 
 
-class RoleRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
-    allowed_roles = []
+class RoleRequiredMixin(LoginRequiredMixin):
+    allowed_roles = ()
     login_url = "account_login"
-    raise_exception = True
 
-    def test_func(self):
-        user = self.request.user
-
-        if not user.is_authenticated:
-            return False
-
-        if user.is_superuser:
-            return True
-
-        return getattr(user, "role", None) in self.allowed_roles
+    def dispatch(self, request, *args, **kwargs):
+        require_role(request.user, self.allowed_roles)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ITAdminRequiredMixin(RoleRequiredMixin):

@@ -1,52 +1,19 @@
 {% extends "accounts/base.html" %}
-{% load static %}
-
-{% block title %}Accounts Dashboard | KP-HSLMS{% endblock %}
-
-{% block accounts_extra_css %}
-    <link rel="stylesheet" href="{% static 'accounts/css/dashboard.css' %}">
-{% endblock %}
-
+{% block title %}Accounts & Access | KP-HSLMS{% endblock %}
 {% block accounts_content %}
-<section class="accounts-header">
-    <div>
-        <p class="kp-eyebrow">IT Administration</p>
-        <h1>Accounts Dashboard</h1>
-        <p>Manage users, roles, temporary passwords, and account status.</p>
-    </div>
+<section class="page-hero">
+    <div><p class="kp-eyebrow">Identity and access</p><h1>Accounts & Permissions</h1><p>Create institutional users, maintain account status, reset credentials, and review user access activity from one controlled workspace.</p></div>
+    <div class="page-actions"><a class="btn btn-outline-secondary" href="{% url 'accounts:student_create' %}"><i class="bi bi-person-plus me-1"></i>New student</a><a class="btn btn-kp-primary" href="{% url 'accounts:staff_create' %}"><i class="bi bi-person-badge me-1"></i>New staff member</a></div>
 </section>
 
 <div class="row g-4">
-    <div class="col-md-6 col-xl-3">
-        <a href="{% url 'accounts:user_list' %}" class="account-card">
-            <span>Users</span>
-            <strong>View all</strong>
-            <p>Search and manage all accounts.</p>
-        </a>
-    </div>
+    <div class="col-md-6 col-xl-3"><a class="kp-card kp-card-hover text-decoration-none text-reset" href="{% url 'accounts:user_list' %}"><span class="stat-card-icon"><i class="bi bi-people"></i></span><h2 class="kp-card-title">System users</h2><p class="kp-card-subtitle">Search, filter, update, activate, or deactivate institutional accounts.</p><span class="small fw-bold text-kp-primary">Manage users <i class="bi bi-arrow-right"></i></span></a></div>
+    <div class="col-md-6 col-xl-3"><a class="kp-card kp-card-hover text-decoration-none text-reset" href="{% url 'accounts:student_create' %}"><span class="stat-card-icon"><i class="bi bi-mortarboard"></i></span><h2 class="kp-card-title">Student registration</h2><p class="kp-card-subtitle">Create an individual student account with program and cohort placement.</p><span class="small fw-bold text-kp-primary">Register student <i class="bi bi-arrow-right"></i></span></a></div>
+    <div class="col-md-6 col-xl-3"><a class="kp-card kp-card-hover text-decoration-none text-reset" href="{% url 'accounts:staff_create' %}"><span class="stat-card-icon"><i class="bi bi-person-vcard"></i></span><h2 class="kp-card-title">Staff registration</h2><p class="kp-card-subtitle">Create lecturer, coordinator, administration, and IT accounts.</p><span class="small fw-bold text-kp-primary">Register staff <i class="bi bi-arrow-right"></i></span></a></div>
+    <div class="col-md-6 col-xl-3"><a class="kp-card kp-card-hover text-decoration-none text-reset" href="{% url 'bulk_imports:upload' %}"><span class="stat-card-icon"><i class="bi bi-file-earmark-spreadsheet"></i></span><h2 class="kp-card-title">Bulk registration</h2><p class="kp-card-subtitle">Validate and register larger student or staff datasets from CSV or Excel.</p><span class="small fw-bold text-kp-primary">Import records <i class="bi bi-arrow-right"></i></span></a></div>
+</div>
 
-    <div class="col-md-6 col-xl-3">
-        <a href="{% url 'accounts:student_create' %}" class="account-card">
-            <span>Students</span>
-            <strong>Create</strong>
-            <p>Generate student account using registration number.</p>
-        </a>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <a href="{% url 'accounts:staff_create' %}" class="account-card">
-            <span>Staff</span>
-            <strong>Create</strong>
-            <p>Create lecturer, coordinator, administration, or IT account.</p>
-        </a>
-    </div>
-
-    <div class="col-md-6 col-xl-3">
-        <a href="#" class="account-card">
-            <span>Logs</span>
-            <strong>Audit</strong>
-            <p>Track account changes and password reset activities.</p>
-        </a>
-    </div>
+<div class="surface-card mt-4">
+    <div class="row g-4 align-items-center"><div class="col-lg-8"><p class="kp-eyebrow">Account governance</p><h2 class="h4">Designed for controlled institutional access</h2><p class="text-kp-muted">Temporary credentials, mandatory password changes, role groups, status management, and account action history provide a clear administrative trail without relying on public signup.</p></div><div class="col-lg-4"><div class="detail-list"><dl class="detail-item"><dt>Student username</dt><dd>RegistrationNumber@kplms</dd></dl><dl class="detail-item"><dt>Account creation</dt><dd>IT administration</dd></dl></div></div></div>
 </div>
 {% endblock %}

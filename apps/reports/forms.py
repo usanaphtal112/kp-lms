@@ -5,13 +5,16 @@ from django.conf import settings
 
 from apps.academics.models import ModuleOffering
 from apps.accounts.models import UserRole
+from apps.core.forms import BootstrapFilterFormMixin
 
 from .models import (
     ClinicalReport,
     ClinicalTeachingReport,
     PortfolioItem,
     ReportReviewDecision,
+    ReportStatus
 )
+
 
 
 class BootstrapFormMixin:
@@ -183,3 +186,25 @@ class PortfolioItemForm(BootstrapFormMixin, forms.ModelForm):
 
     def clean_evidence_file(self):
         return validate_report_attachment(self.cleaned_data.get("evidence_file"))
+    
+
+
+class ClinicalReportFilterForm(BootstrapFilterFormMixin, forms.Form):
+    q = forms.CharField(
+        required=False,
+        label="Search",
+        widget=forms.TextInput(attrs={"placeholder": "Student, title, facility, module..."}),
+    )
+    status = forms.ChoiceField(
+        required=False,
+        choices=[("", "All statuses")] + list(ReportStatus.choices),
+    )
+    module_code = forms.CharField(
+        required=False,
+        label="Module",
+        widget=forms.TextInput(attrs={"placeholder": "FON101"}),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_bootstrap_classes()

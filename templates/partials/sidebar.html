@@ -1,27 +1,46 @@
-<aside class="kp-sidebar" id="appSidebar">
-    <div class="kp-sidebar-header">
-        <div>
-            <p class="kp-sidebar-eyebrow">Logged in as</p>
-            <h2>{{ request.user.role|default:"User" }}</h2>
+<aside class="kp-sidebar" id="appSidebar" aria-label="Application navigation">
+    <div class="kp-sidebar-profile">
+        <div class="kp-sidebar-profile-top">
+            <span class="kp-avatar">{{ request.user.first_name|first|default:request.user.username|first|upper }}</span>
+            <div class="min-w-0">
+                <h2 class="text-truncate">{{ request.user.get_full_name|default:request.user.username }}</h2>
+                <p class="text-truncate">{{ request.user.get_role_display|default:request.user.role }}</p>
+            </div>
         </div>
     </div>
 
-    <nav class="kp-sidebar-nav" aria-label="Main navigation">
-        <ul>
-            {% for item in sidebar_items %}
-                <li>
-                    <a
-                        class="{% if item.match and item.match in request.path %}active{% endif %}"
-                        href="{% if item.url_name %}{% url item.url_name %}{% else %}{{ item.href }}{% endif %}"
-                    >
-                        <span>{{ item.label }}</span>
-                    </a>
-                </li>
-            {% empty %}
-                <li>
-                    <span class="kp-sidebar-empty">No menu items available.</span>
-                </li>
-            {% endfor %}
-        </ul>
-    </nav>
+    <div class="kp-sidebar-section-label">Workspace</div>
+    <ul class="kp-sidebar-nav">
+        {% for item in sidebar_items %}
+            <li>
+                <a class="kp-sidebar-link {% if item.match and item.match in request.path %}active{% endif %}"
+                   href="{% if item.url_name %}{% url item.url_name %}{% else %}{{ item.href }}{% endif %}"
+                   {% if item.match and item.match in request.path %}aria-current="page"{% endif %}>
+                    {% if "Dashboard" in item.label %}<i class="bi bi-grid-1x2"></i>
+                    {% elif "Academic" in item.label %}<i class="bi bi-mortarboard"></i>
+                    {% elif "Booking" in item.label %}<i class="bi bi-calendar2-check"></i>
+                    {% elif "Attendance" in item.label %}<i class="bi bi-person-check"></i>
+                    {% elif "Self-Practice" in item.label %}<i class="bi bi-clipboard2-pulse"></i>
+                    {% elif "Procedure" in item.label %}<i class="bi bi-list-check"></i>
+                    {% elif "OSCE" in item.label %}<i class="bi bi-ui-checks-grid"></i>
+                    {% elif "Inventory" in item.label %}<i class="bi bi-box-seam"></i>
+                    {% elif "Report" in item.label or "Portfolio" in item.label %}<i class="bi bi-file-earmark-bar-graph"></i>
+                    {% elif "User" in item.label or "Permission" in item.label or "Account" in item.label %}<i class="bi bi-people"></i>
+                    {% elif "Import" in item.label %}<i class="bi bi-cloud-arrow-up"></i>
+                    {% elif "Notification" in item.label %}<i class="bi bi-bell"></i>
+                    {% elif "Audit" in item.label %}<i class="bi bi-shield-check"></i>
+                    {% else %}<i class="bi bi-circle-square"></i>{% endif %}
+                    <span>{{ item.label }}</span>
+                    <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        {% empty %}
+            <li><span class="kp-sidebar-link opacity-50"><i class="bi bi-info-circle"></i>No navigation items</span></li>
+        {% endfor %}
+    </ul>
+
+    <div class="kp-sidebar-footer">
+        <strong class="d-block text-white mb-1">KP-HSLMS</strong>
+        <span>Faculty of Health Sciences</span>
+    </div>
 </aside>

@@ -1,65 +1,7 @@
 {% extends "assessments/base.html" %}
-
 {% block title %}OSCE Assessments | KP-HSLMS{% endblock %}
-
 {% block assessments_content %}
-<section class="assessment-header d-flex justify-content-between align-items-start gap-3">
-    <div>
-        <p class="kp-eyebrow">OSCE assessment</p>
-        <h1>OSCE Dashboard</h1>
-        <p>Manage OSCE exams, stations, rubrics, marks, approvals, results, and retakes.</p>
-    </div>
-
-    {% if request.user.role != "STUDENT" %}
-        <a href="{% url 'assessments:exam_create' %}" class="btn btn-kp-primary">
-            Create OSCE exam
-        </a>
-    {% endif %}
-</section>
-
-{% if request.user.role == "STUDENT" %}
-    <div class="row g-4">
-        <div class="col-md-6">
-            <a href="{% url 'assessments:my_results' %}" class="assessment-card">
-                <span>My attempts</span>
-                <strong>{{ my_attempt_count|default:0 }}</strong>
-                <p>View published OSCE results and retake status.</p>
-            </a>
-        </div>
-
-        <div class="col-md-6">
-            <a href="{% url 'assessments:my_results' %}" class="assessment-card">
-                <span>Published results</span>
-                <strong>{{ my_published_result_count|default:0 }}</strong>
-                <p>Only approved and published results are visible.</p>
-            </a>
-        </div>
-    </div>
-{% else %}
-    <div class="row g-4">
-        <div class="col-md-4">
-            <a href="{% url 'assessments:exam_list' %}" class="assessment-card">
-                <span>OSCE exams</span>
-                <strong>{{ exam_count }}</strong>
-                <p>Create exams, stations, and rubrics.</p>
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{% url 'assessments:attempt_list' %}" class="assessment-card">
-                <span>Attempts</span>
-                <strong>{{ attempt_count }}</strong>
-                <p>Mark student OSCE attempts.</p>
-            </a>
-        </div>
-
-        <div class="col-md-4">
-            <a href="{% url 'assessments:retake_request_list' %}" class="assessment-card">
-                <span>Retake requests</span>
-                <strong>{{ pending_retake_count }}</strong>
-                <p>Approve or reject failed-student retake requests.</p>
-            </a>
-        </div>
-    </div>
-{% endif %}
+<section class="page-hero"><div><p class="kp-eyebrow">Objective Structured Clinical Examination</p><h1>OSCE Assessment</h1><p>Configure exams, stations, and rubrics; generate eligible candidates; enter marks; manage approval and publication; and process retakes.</p></div>{% if request.user.role != 'STUDENT' %}<div class="page-actions"><a class="btn btn-kp-primary" href="{% url 'assessments:exam_create' %}">Create OSCE exam</a></div>{% endif %}</section>
+{% if request.user.role == 'STUDENT' %}<div class="row g-4"><div class="col-md-6"><a class="kp-card kp-card-hover d-block text-decoration-none text-reset" href="{% url 'assessments:my_results' %}"><span class="stat-card-icon"><i class="bi bi-ui-checks-grid"></i></span><p class="kp-eyebrow">Attempts</p><h2 class="h3">{{ my_attempt_count|default:0 }}</h2><p class="text-kp-muted">Review your published examination outcomes and attempt history.</p></a></div><div class="col-md-6"><a class="kp-card kp-card-hover d-block text-decoration-none text-reset" href="{% url 'assessments:my_results' %}"><span class="stat-card-icon"><i class="bi bi-award"></i></span><p class="kp-eyebrow">Published results</p><h2 class="h3">{{ my_published_result_count|default:0 }}</h2><p class="text-kp-muted">Approved results available in your student workspace.</p></a></div></div>{% else %}<div class="stat-grid"><a class="stat-card text-decoration-none" href="{% url 'assessments:exam_list' %}"><span class="stat-card-icon"><i class="bi bi-journal-medical"></i></span><span>OSCE exams</span><strong>{{ exam_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'assessments:attempt_list' %}"><span class="stat-card-icon"><i class="bi bi-person-lines-fill"></i></span><span>Candidate attempts</span><strong>{{ attempt_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'assessments:retake_request_list' %}"><span class="stat-card-icon"><i class="bi bi-arrow-repeat"></i></span><span>Pending retakes</span><strong>{{ pending_retake_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'assessments:exam_list' %}"><span class="stat-card-icon"><i class="bi bi-file-earmark-spreadsheet"></i></span><span>Excel exports</span><strong><i class="bi bi-download"></i></strong></a></div>{% endif %}
+<div class="surface-card mt-4"><p class="kp-eyebrow">Assessment governance</p><div class="row g-4"><div class="col-md-4"><h2 class="h6">Eligibility</h2><p class="text-kp-muted small">Only students who meet the module attendance requirement are generated as first-attempt candidates.</p></div><div class="col-md-4"><h2 class="h6">Pass mark</h2><p class="text-kp-muted small">The module pass threshold is applied consistently when calculating each final result.</p></div><div class="col-md-4"><h2 class="h6">Retake rule</h2><p class="text-kp-muted small">A successful retake records a final mark of 60%, while preserving the raw percentage in the audit trail.</p></div></div></div>
 {% endblock %}

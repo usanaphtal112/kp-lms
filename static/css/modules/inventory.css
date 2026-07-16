@@ -1,0 +1,4 @@
+.inventory-accent .stat-card-icon,
+.inventory-accent .module-icon { color: #b45309; background: #fff5e6; }
+.stock-level { min-width: 110px; }
+.stock-level small { display:block; color:var(--kp-muted); }

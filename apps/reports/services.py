@@ -5,10 +5,13 @@ from django.utils import timezone
 from apps.assessments.models import OSCEResult
 from apps.attendance.models import EligibilitySnapshot
 from apps.labs.models import ProcedureLog, SelfPracticeSession
+from apps.core.audit import log_audit
+from apps.core.models import AuditAction
+from apps.notifications.models import NotificationType
+from apps.notifications.services import notify_user
 
 from .models import (
     ClinicalReport,
-    ClinicalTeachingReport,
     PortfolioItem,
     PortfolioItemType,
     ReportReview,
@@ -88,6 +91,26 @@ def review_clinical_report(*, report, reviewer, decision, comments=""):
         comments=comments,
     )
 
+    log_audit(
+        actor=reviewer,
+        action=AuditAction.APPROVE if decision == ReportReviewDecision.APPROVED else AuditAction.UPDATE,
+        target_object=report,
+        message=f"Clinical report reviewed: {decision}.",
+        new_values={
+            "status": decision,
+            "comments": comments,
+        },
+    )
+
+    notify_user(
+        recipient=report.student,
+        actor=reviewer,
+        title="Clinical report reviewed",
+        message=f"Your clinical report '{report.title}' was reviewed: {decision}.",
+        notification_type=NotificationType.REPORT,
+        url=f"/reports/clinical/{report.pk}/",
+    )
+
     if decision == ReportReviewDecision.APPROVED:
         create_portfolio_item_from_clinical_report(
             report=report,
@@ -124,6 +147,26 @@ def review_clinical_teaching_report(*, report, reviewer, decision, comments=""):
         reviewer=reviewer,
         decision=decision,
         comments=comments,
+    )
+
+    log_audit(
+        actor=reviewer,
+        action=AuditAction.APPROVE if decision == ReportReviewDecision.APPROVED else AuditAction.UPDATE,
+        target_object=report,
+        message=f"Clinical teaching report reviewed: {decision}.",
+        new_values={
+            "status": decision,
+            "comments": comments,
+        },
+    )
+
+    notify_user(
+        recipient=report.lecturer,
+        actor=reviewer,
+        title="Clinical teaching report reviewed",
+        message=f"Your teaching report '{report.title}' was reviewed: {decision}.",
+        notification_type=NotificationType.REPORT,
+        url=f"/reports/teaching/{report.pk}/",
     )
 
     return report

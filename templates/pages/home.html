@@ -1,100 +1,102 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 
-{% block title %}Home | KP-HSLMS{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
-{% endblock %}
+{% block title %}KP-HSLMS | Clinical Skills Laboratory Management{% endblock %}
+{% block body_class %}public-home{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/home.css' %}">{% endblock %}
 
 {% block content %}
-<section class="kp-home-hero">
-    <div class="row align-items-center g-5">
-        <div class="col-lg-7">
-            <p class="kp-eyebrow">Kibogora Polytechnic · Faculty of Health Sciences</p>
-            <h1>Smart Clinical Skills Laboratory & Competency Management System</h1>
-            <p class="kp-home-lead">
-                Manage demonstrations, attendance, self-practice, OSCE assessments,
-                inventory, clinical reports, and student competency progression in one platform.
-            </p>
-
-            <div class="d-flex flex-wrap gap-3 mt-4">
-                <a href="{% url 'account_login' %}" class="btn btn-kp-primary btn-lg">
-                    Login to system
-                </a>
-                <a href="#system-modules" class="btn btn-outline-secondary btn-lg">
-                    View modules
-                </a>
+<div class="home-page">
+    <section class="home-hero">
+        <div class="container-fluid">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <p class="kp-eyebrow text-white">Kibogora Polytechnic · Faculty of Health Sciences</p>
+                    <h1>One intelligent workspace for practical learning and clinical competency.</h1>
+                    <p class="lead">Coordinate demonstrations, attendance, self-practice, OSCE assessment, inventory, clinical reporting, and student progression through a single secure platform.</p>
+                    <div class="home-hero-actions">
+                        <a class="btn btn-light btn-lg" href="{% url 'account_login' %}"><i class="bi bi-box-arrow-in-right me-2"></i>Access the system</a>
+                        <a class="btn btn-outline-light btn-lg" href="#capabilities"><i class="bi bi-arrow-down-circle me-2"></i>Explore capabilities</a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="hero-dashboard-preview" aria-label="System dashboard illustration">
+                        <div class="preview-window">
+                            <div class="preview-top">
+                                <span class="fw-bold text-kp-primary">KP-HSLMS Dashboard</span>
+                                <span class="status-pill success">Operational</span>
+                            </div>
+                            <div class="preview-stat-grid">
+                                <div class="preview-stat"><span>Attendance rule</span><strong>80%</strong></div>
+                                <div class="preview-stat"><span>OSCE pass mark</span><strong>60%</strong></div>
+                                <div class="preview-stat"><span>Learning model</span><strong>Module</strong></div>
+                                <div class="preview-stat"><span>Evidence trail</span><strong>360°</strong></div>
+                            </div>
+                            <div class="mt-3 p-3 rounded-3 bg-kp-soft">
+                                <div class="d-flex align-items-center gap-2 mb-2"><i class="bi bi-check-circle-fill text-success"></i><strong class="small">Integrated workflow</strong></div>
+                                <div class="kp-progress"><span style="width: 86%"></span></div>
+                                <small class="text-kp-muted">From demonstration booking to published competency results.</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+    </section>
 
-        <div class="col-lg-5">
-            <div class="kp-hero-card">
-                <div class="kp-hero-stat">
-                    <span>80%</span>
-                    <p>Attendance requirement for self-practice and OSCE eligibility</p>
-                </div>
-                <div class="kp-hero-stat">
-                    <span>60%</span>
-                    <p>Pass mark for OSCE assessment and retake processing</p>
-                </div>
-                <div class="kp-hero-stat">
-                    <span>360°</span>
-                    <p>Student practical competency history and portfolio tracking</p>
-                </div>
+    <section class="home-section" id="capabilities">
+        <div class="container-fluid">
+            <div class="home-section-heading">
+                <p class="kp-eyebrow">Connected capabilities</p>
+                <h2>Designed around the full health-sciences practical learning journey.</h2>
+                <p>Every module supports the people, records, approvals, resources, and evidence needed for accountable competency-based education.</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-calendar2-check"></i></span><h3>Bookings & scheduling</h3><p>Coordinate demonstrations, self-practice, laboratory rooms, and approval workflows without scheduling conflicts.</p></article></div>
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-person-check"></i></span><h3>Attendance & eligibility</h3><p>Digitize demonstration attendance and make 80% eligibility visible, consistent, and auditable.</p></article></div>
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-clipboard2-pulse"></i></span><h3>Self-practice competency</h3><p>Track approved practice sessions, procedures performed, supervisor verification, and practical history.</p></article></div>
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-ui-checks-grid"></i></span><h3>OSCE assessment</h3><p>Manage stations, rubrics, marks, approvals, results, retakes, and Excel exports in one workflow.</p></article></div>
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-box-seam"></i></span><h3>Inventory control</h3><p>Monitor batches, stock movements, session usage, automated deductions, and low-stock alerts.</p></article></div>
+                <div class="col-md-6 col-xl-4"><article class="module-showcase-card"><span class="module-showcase-icon"><i class="bi bi-file-earmark-bar-graph"></i></span><h3>Reports & portfolio</h3><p>Bring clinical reports, teaching evidence, attendance, procedures, and published results into one portfolio.</p></article></div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="kp-section" id="system-modules">
-    <div class="kp-section-heading">
-        <p class="kp-eyebrow">System modules</p>
-        <h2>Built for health sciences practical learning</h2>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>Demonstrations</h3>
-                <p>Lecturer booking, lab approval, schedules, and attendance recording.</p>
-            </article>
+    <section class="home-section home-section-soft">
+        <div class="container-fluid">
+            <div class="home-section-heading">
+                <p class="kp-eyebrow">Institutional workflow</p>
+                <h2>A clear route from planning to demonstrated competency.</h2>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6 col-xl"><div class="workflow-step"><span class="workflow-number">1</span><h3>Plan</h3><p>Configure programs, cohorts, module offerings, procedures, rooms, and users.</p></div></div>
+                <div class="col-md-6 col-xl"><div class="workflow-step"><span class="workflow-number">2</span><h3>Teach</h3><p>Book demonstrations, record attendance, and monitor student engagement.</p></div></div>
+                <div class="col-md-6 col-xl"><div class="workflow-step"><span class="workflow-number">3</span><h3>Practice</h3><p>Approve self-practice and verify procedures performed under supervision.</p></div></div>
+                <div class="col-md-6 col-xl"><div class="workflow-step"><span class="workflow-number">4</span><h3>Assess</h3><p>Conduct OSCE examinations, calculate outcomes, and approve results.</p></div></div>
+                <div class="col-md-6 col-xl"><div class="workflow-step"><span class="workflow-number">5</span><h3>Evidence</h3><p>Publish results, manage reports, and retain a long-term competency portfolio.</p></div></div>
+            </div>
         </div>
+    </section>
 
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>Self-Practice</h3>
-                <p>Student booking, supervisor verification, and procedure tracking.</p>
-            </article>
+    <section class="home-section">
+        <div class="container-fluid">
+            <div class="rule-banner">
+                <div class="rule-item"><strong>80%</strong><h3 class="text-white">Attendance eligibility</h3><p>Minimum demonstration attendance for self-practice and OSCE eligibility.</p></div>
+                <div class="rule-item"><strong>60%</strong><h3 class="text-white">OSCE pass mark</h3><p>Consistent automated assessment threshold across module offerings.</p></div>
+                <div class="rule-item"><strong>60%</strong><h3 class="text-white">Passed retake mark</h3><p>Final recorded mark when a student successfully passes a retake.</p></div>
+            </div>
         </div>
+    </section>
 
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>OSCE Assessment</h3>
-                <p>Stations, rubrics, marks entry, approval, results, and retakes.</p>
-            </article>
+    <section class="home-section pt-0">
+        <div class="container-fluid">
+            <div class="home-cta d-lg-flex align-items-center justify-content-between gap-4">
+                <div><p class="kp-eyebrow text-white">Secure institutional access</p><h2>Ready to manage the next practical learning activity?</h2><p>Sign in with your assigned KP-HSLMS account to open your role-specific workspace.</p></div>
+                <a class="btn btn-light btn-lg flex-shrink-0 mt-3 mt-lg-0" href="{% url 'account_login' %}">Open KP-HSLMS <i class="bi bi-arrow-right ms-2"></i></a>
+            </div>
         </div>
-
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>Inventory</h3>
-                <p>Consumables, stock movements, session usage, and Excel reports.</p>
-            </article>
-        </div>
-
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>Clinical Reports</h3>
-                <p>Student reports, clinical teaching reports, reviews, and downloads.</p>
-            </article>
-        </div>
-
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-module-card">
-                <h3>Administration</h3>
-                <p>Approvals, monitoring, lecturer assignment, and system control.</p>
-            </article>
-        </div>
-    </div>
-</section>
+    </section>
+</div>
 {% endblock %}
+
+{% block extra_js %}<script src="{% static 'js/pages/home.js' %}"></script>{% endblock %}

@@ -1,67 +1,7 @@
 {% extends "labs/base.html" %}
-
 {% block title %}Self-Practice | KP-HSLMS{% endblock %}
-
 {% block labs_content %}
-<section class="lab-header d-flex justify-content-between align-items-start gap-3">
-    <div>
-        <p class="kp-eyebrow">Self-practice</p>
-        <h1>Self-Practice Sessions</h1>
-        <p>Request, approve, supervise, and review self-practice activities.</p>
-    </div>
-
-    {% if request.user.role == "STUDENT" %}
-        <a href="{% url 'labs:self_practice_create' %}" class="btn btn-kp-primary">
-            Request self-practice
-        </a>
-    {% endif %}
-</section>
-
-<div class="card lab-table-card">
-    <div class="table-responsive">
-        <table class="table align-middle mb-0">
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Module</th>
-                    <th>Lab room</th>
-                    <th>Time</th>
-                    <th>Supervisor</th>
-                    <th>Booking status</th>
-                    <th>Session status</th>
-                    <th class="text-end">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for session in sessions %}
-                    <tr>
-                        <td>
-                            <strong>{{ session.student.get_full_name|default:session.student.username }}</strong>
-                            <div class="small text-muted">
-                                {{ session.student.student_profile.registration_number|default:session.student.username }}
-                            </div>
-                        </td>
-                        <td>{{ session.module_offering.module.code }}</td>
-                        <td>{{ session.booking.lab_room }}</td>
-                        <td>{{ session.booking.start_at }}</td>
-                        <td>{{ session.supervisor|default:"—" }}</td>
-                        <td>{{ session.booking.get_status_display }}</td>
-                        <td>{{ session.get_status_display }}</td>
-                        <td class="text-end">
-                            <a href="{% url 'labs:self_practice_detail' session.pk %}" class="btn btn-sm btn-outline-secondary">
-                                View
-                            </a>
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="8" class="text-center text-muted py-4">
-                            No self-practice sessions found.
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Competency practice</p><h1>Self-practice sessions</h1><p>Manage eligibility-controlled requests, approvals, supervision, attendance, and procedure verification.</p></div>{% if request.user.role == 'STUDENT' %}<div class="page-actions"><a class="btn btn-kp-primary" href="{% url 'labs:self_practice_create' %}">Request self-practice</a></div>{% endif %}</section>
+<div class="surface-card table-card"><div class="table-responsive"><table class="table table-hover" data-mobile-labels><thead><tr><th>Student</th><th>Module</th><th>Room</th><th>Schedule</th><th>Supervisor</th><th>Booking</th><th>Session</th><th class="text-end">Action</th></tr></thead><tbody>{% for session in sessions %}<tr><td><div class="table-primary-text">{{ session.student.get_full_name|default:session.student.username }}</div><div class="table-secondary-text">{{ session.student.student_profile.registration_number|default:session.student.username }}</div></td><td>{{ session.module_offering.module.code }}</td><td>{{ session.booking.lab_room }}</td><td>{{ session.booking.start_at }}</td><td>{{ session.supervisor|default:"—" }}</td><td>{% if session.booking.status == 'APPROVED' or session.booking.status == 'COMPLETED' %}<span class="status-pill success">{{ session.booking.get_status_display }}</span>{% elif session.booking.status == 'REJECTED' %}<span class="status-pill danger">Rejected</span>{% else %}<span class="status-pill warning">{{ session.booking.get_status_display }}</span>{% endif %}</td><td><span class="status-pill info">{{ session.get_status_display }}</span></td><td class="text-end"><a class="btn btn-sm btn-outline-secondary" href="{% url 'labs:self_practice_detail' session.pk %}">View</a></td></tr>{% empty %}<tr><td colspan="8">{% include "partials/empty_state.html" with empty_icon="bi-clipboard2-pulse" empty_title="No self-practice sessions" empty_message="Eligible students can request a supervised practice session." %}</td></tr>{% endfor %}</tbody></table></div></div>
+{% include "partials/pagination.html" %}
 {% endblock %}

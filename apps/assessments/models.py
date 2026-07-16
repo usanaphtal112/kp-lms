@@ -473,3 +473,49 @@ class RetakeRequest(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.osce_exam} - {self.status}"
+    
+class OSCEMarkAuditLog(models.Model):
+    score = models.ForeignKey(
+        OSCEScore,
+        on_delete=models.CASCADE,
+        related_name="mark_audit_logs",
+        null=True,
+        blank=True,
+    )
+    attempt = models.ForeignKey(
+        OSCEAttempt,
+        on_delete=models.CASCADE,
+        related_name="mark_audit_logs",
+    )
+    rubric_item = models.ForeignKey(
+        OSCERubricItem,
+        on_delete=models.SET_NULL,
+        related_name="mark_audit_logs",
+        null=True,
+        blank=True,
+    )
+    actor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        related_name="osce_mark_changes",
+        null=True,
+        blank=True,
+    )
+    old_score = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        null=True,
+        blank=True,
+    )
+    new_score = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+    )
+    reason = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.attempt} - {self.rubric_item} - {self.old_score} → {self.new_score}"

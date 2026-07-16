@@ -1,12 +1,4 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'attendance/css/attendance.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="attendance-page">
-    {% block attendance_content %}{% endblock %}
-</div>
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/modules/attendance.css' %}">{% block attendance_extra_css %}{% endblock %}{% endblock %}
+{% block content %}<div class="attendance-accent">{% block attendance_content %}{% endblock %}</div>{% endblock %}

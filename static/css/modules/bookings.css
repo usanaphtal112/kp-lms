@@ -1,0 +1,3 @@
+.bookings-accent .stat-card-icon,
+.bookings-accent .module-icon { color: #9a5705; background: var(--kp-warning-soft); }
+.schedule-time { min-width: 140px; font-weight: 750; color: var(--kp-navy); }

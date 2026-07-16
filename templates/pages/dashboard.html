@@ -2,78 +2,52 @@
 {% load static %}
 
 {% block title %}Dashboard | KP-HSLMS{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'core/css/dashboard.css' %}">
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/dashboard.css' %}">{% endblock %}
 
 {% block content %}
-<section class="kp-dashboard-header">
-    <div>
-        <p class="kp-eyebrow">Dashboard</p>
-        <h1>Welcome, {{ request.user.get_full_name|default:request.user.username }}</h1>
-        <p>
-            Your current role is
-            <strong>{{ request.user.role|default:"User" }}</strong>.
-        </p>
+<section class="dashboard-welcome">
+    <div class="dashboard-welcome-main">
+        <span class="role-badge"><i class="bi bi-shield-check"></i>{{ request.user.get_role_display|default:request.user.role }}</span>
+        <p class="kp-eyebrow text-white"><span data-time-greeting>Welcome</span></p>
+        <h1>{{ request.user.get_full_name|default:request.user.username }}</h1>
+        <p>Your workspace brings the most relevant KP-HSLMS tools together so you can move from activity to decision with less administrative friction.</p>
     </div>
-
-    <div class="kp-dashboard-badge">
-        <span>KP-HSLMS</span>
-        <strong>Phase 1</strong>
+    <div class="dashboard-welcome-side">
+        <div class="dashboard-mini-card">
+            <div class="d-flex align-items-start gap-3"><span class="stat-card-icon"><i class="bi bi-compass"></i></span><div><h2>Role-focused navigation</h2><p>The sidebar only exposes the modules and actions available to your account.</p></div></div>
+        </div>
+        <div class="dashboard-mini-card">
+            <div class="d-flex align-items-start gap-3"><span class="stat-card-icon"><i class="bi bi-bell"></i></span><div><h2>Stay informed</h2><p>Workflow decisions and important updates are available in Notifications.</p></div></div>
+        </div>
     </div>
 </section>
 
-<section class="row g-4">
-    {% for card in dashboard_cards %}
-        <div class="col-md-6 col-xl-4">
-            <article class="kp-dashboard-card">
-                <div class="kp-dashboard-card-value">{{ card.value }}</div>
+<section class="mb-4">
+    <div class="d-flex align-items-end justify-content-between gap-3 mb-3">
+        <div><p class="kp-eyebrow">Your workspace</p><h2 class="h4 mb-0">Primary actions</h2></div>
+    </div>
+    <div class="dashboard-card-grid">
+        {% for card in dashboard_cards %}
+            <a class="dashboard-action-card" href="{{ card.href|default:'#' }}">
+                <span class="dashboard-action-icon"><i class="bi bi-arrow-up-right-square"></i></span>
+                <span class="value">{{ card.value }}</span>
                 <h2>{{ card.title }}</h2>
                 <p>{{ card.description }}</p>
-                <a href="{{ card.href|default:'#' }}" class="stretched-link">
-                    Open
-                </a>
-            </article>
-        </div>
-    {% empty %}
-        <div class="col-12">
-            <div class="alert alert-info">
-                No dashboard cards are configured for your role yet.
+                <span class="small fw-bold text-kp-primary">Open workspace <i class="bi bi-arrow-right ms-1"></i></span>
+            </a>
+        {% empty %}
+            <div class="surface-card grid-column-all">
+                {% include "partials/empty_state.html" with empty_icon="bi-grid" empty_title="Your dashboard is ready" empty_message="Use the sidebar to open the modules available for your role." %}
             </div>
-        </div>
-    {% endfor %}
-</section>
-
-<section class="kp-dashboard-rules mt-4">
-    <div class="row g-4">
-        <div class="col-lg-4">
-            <div class="kp-rule-card">
-                <span>01</span>
-                <h3>Attendance rule</h3>
-                <p>Students must reach at least 80% attendance to become eligible for self-practice and OSCE.</p>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="kp-rule-card">
-                <span>02</span>
-                <h3>Pass mark rule</h3>
-                <p>OSCE pass mark is 60% and above.</p>
-            </div>
-        </div>
-
-        <div class="col-lg-4">
-            <div class="kp-rule-card">
-                <span>03</span>
-                <h3>Retake rule</h3>
-                <p>If a student passes a retake, the final recorded retake mark is 60%.</p>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </section>
+
+<section class="dashboard-guidance" aria-label="System rules">
+    <article class="guidance-card"><strong>01 · Eligibility</strong><h3>Attendance requirement</h3><p>Students require at least 80% attendance before self-practice and OSCE eligibility.</p></article>
+    <article class="guidance-card"><strong>02 · Assessment</strong><h3>OSCE pass mark</h3><p>A mark of 60% or above is required for a passing OSCE result.</p></article>
+    <article class="guidance-card"><strong>03 · Retakes</strong><h3>Recorded final mark</h3><p>A successful retake is recorded with a final mark of 60%.</p></article>
+</section>
 {% endblock %}
 
-{% block extra_js %}
-    <script src="{% static 'core/js/dashboard.js' %}"></script>
-{% endblock %}
+{% block extra_js %}<script src="{% static 'js/pages/dashboard.js' %}"></script>{% endblock %}

@@ -1,58 +1,6 @@
 {% extends "labs/base.html" %}
-
 {% block title %}Lab Room | KP-HSLMS{% endblock %}
-
 {% block labs_content %}
-<section class="lab-header">
-    <p class="kp-eyebrow">Lab rooms</p>
-    <h1>Lab room</h1>
-    <p>Create or update a laboratory room.</p>
-</section>
-
-<form method="post" class="card lab-form-card" novalidate>
-    {% csrf_token %}
-
-    <div class="card-body">
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-
-        <div class="row g-3">
-            {% for field in form %}
-                <div class="col-md-6">
-                    {% if field.field.widget.input_type == "checkbox" %}
-                        <div class="form-check mt-4">
-                            {{ field }}
-                            <label class="form-check-label" for="{{ field.id_for_label }}">
-                                {{ field.label }}
-                            </label>
-                        </div>
-                    {% else %}
-                        <label class="form-label" for="{{ field.id_for_label }}">
-                            {{ field.label }}
-                        </label>
-                        {{ field }}
-                    {% endif %}
-
-                    {% if field.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ field.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="card-footer d-flex justify-content-between">
-        <a href="{% url 'labs:labroom_list' %}" class="btn btn-outline-secondary">
-            Cancel
-        </a>
-        <button type="submit" class="btn btn-kp-primary">
-            Save
-        </button>
-    </div>
-</form>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Laboratory spaces</p><h1>Lab room information</h1><p>Use a short institutional code and an accurate capacity to support reliable scheduling.</p></div></section>
+<form method="post" class="surface-card" data-prevent-double-submit novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}<div class="row g-3">{% for field in form %}<div class="{% if field.field.widget.input_type == 'checkbox' %}col-12{% else %}col-md-6{% endif %}">{% if field.field.widget.input_type == 'checkbox' %}<div class="form-check mt-3">{{ field }}<label class="form-check-label fw-semibold" for="{{ field.id_for_label }}">{{ field.label }}</label></div>{% else %}<label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% endif %}{% if field.errors %}<div class="invalid-feedback d-block">{{ field.errors }}</div>{% endif %}</div>{% endfor %}</div><div class="form-actions"><a class="btn btn-outline-secondary" href="{% url 'labs:labroom_list' %}">Cancel</a><button class="btn btn-kp-primary" type="submit">Save room</button></div></form>
 {% endblock %}

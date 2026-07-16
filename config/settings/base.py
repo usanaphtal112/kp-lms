@@ -24,7 +24,7 @@ DEBUG = config("DEBUG", default=False, cast=bool)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="").split(",")
+ALLOWED_HOSTS = ["*"]
 
 
 
@@ -55,7 +55,7 @@ LOCAL_APPS = [
     "apps.assessments.apps.AssessmentsConfig",
     "apps.inventory.apps.InventoryConfig",
     "apps.reports.apps.ReportsConfig",
-    # "apps.notification.apps.NotificationsConfig",
+    "apps.notifications.apps.NotificationsConfig",
     "apps.bulk_imports.apps.BulkImportsConfig",
 ]
 
@@ -90,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 "apps.core.context_processors.navigation",
+                "apps.notifications.context_processors.notifications_context",
             ],
         },
     },

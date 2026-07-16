@@ -1,0 +1,3 @@
+.accounts-accent .stat-card-icon,
+.accounts-accent .module-icon { color: #4f46e5; background: #eef2ff; }
+.account-profile-card { position: sticky; top: calc(var(--kp-topbar-height) + 1rem); }

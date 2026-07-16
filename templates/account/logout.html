@@ -1,34 +1,13 @@
 {% extends "layouts/auth.html" %}
-
-{% block title %}Logout | KP-HSLMS{% endblock %}
-
+{% block title %}Sign out | KP-HSLMS{% endblock %}
 {% block auth_content %}
-<div class="kp-auth-card">
-    <div class="kp-auth-card-header">
-        <p class="kp-eyebrow">End session</p>
-        <h2>Logout</h2>
-        <p>Are you sure you want to logout from KP-HSLMS?</p>
-    </div>
-
-    <form method="post" action="{% url 'account_logout' %}">
+<div class="auth-card text-center">
+    <span class="empty-state-icon"><i class="bi bi-box-arrow-right"></i></span>
+    <div class="auth-card-header"><p class="kp-eyebrow">End session</p><h2>Sign out of KP-HSLMS?</h2><p>Your current session will be closed securely.</p></div>
+    <form method="post" action="{% url 'account_logout' %}" data-prevent-double-submit>
         {% csrf_token %}
-
-        {% if redirect_field_value %}
-            <input
-                type="hidden"
-                name="{{ redirect_field_name }}"
-                value="{{ redirect_field_value }}"
-            >
-        {% endif %}
-
-        <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-kp-primary">
-                Yes, logout
-            </button>
-            <a href="{% url 'core:dashboard' %}" class="btn btn-outline-secondary">
-                Cancel
-            </a>
-        </div>
+        {% if redirect_field_value %}<input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}">{% endif %}
+        <div class="d-grid gap-2"><button class="btn btn-kp-primary" type="submit">Yes, sign out</button><a class="btn btn-outline-secondary" href="{% url 'core:dashboard' %}">Return to dashboard</a></div>
     </form>
 </div>
 {% endblock %}

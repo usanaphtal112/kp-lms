@@ -1,12 +1,4 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'bookings/css/bookings.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="bookings-page">
-    {% block bookings_content %}{% endblock %}
-</div>
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/modules/bookings.css' %}">{% block bookings_extra_css %}{% endblock %}{% endblock %}
+{% block content %}<div class="bookings-accent">{% block bookings_content %}{% endblock %}</div>{% endblock %}

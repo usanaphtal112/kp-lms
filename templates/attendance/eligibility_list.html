@@ -1,65 +1,6 @@
 {% extends "attendance/base.html" %}
-
 {% block title %}Eligibility Monitor | KP-HSLMS{% endblock %}
-
 {% block attendance_content %}
-<section class="attendance-header">
-    <p class="kp-eyebrow">Eligibility monitor</p>
-    <h1>Eligibility Snapshots</h1>
-    <p>Latest stored eligibility records for self-practice and OSCE.</p>
-</section>
-
-<div class="card attendance-table-card">
-    <div class="table-responsive">
-        <table class="table align-middle mb-0">
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Module</th>
-                    <th>Cohort</th>
-                    <th>Attendance</th>
-                    <th>Self-practice</th>
-                    <th>OSCE</th>
-                    <th>Calculated at</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for snapshot in snapshots %}
-                    <tr>
-                        <td>
-                            <strong>{{ snapshot.student.get_full_name|default:snapshot.student.username }}</strong>
-                            <div class="small text-muted">
-                                {{ snapshot.student.student_profile.registration_number|default:snapshot.student.username }}
-                            </div>
-                        </td>
-                        <td>{{ snapshot.module_offering.module.code }}</td>
-                        <td>{{ snapshot.module_offering.cohort.code }}</td>
-                        <td>{{ snapshot.attendance_percentage }}%</td>
-                        <td>
-                            {% if snapshot.is_self_practice_eligible %}
-                                <span class="badge text-bg-success">Eligible</span>
-                            {% else %}
-                                <span class="badge text-bg-warning">Not eligible</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if snapshot.is_osce_eligible %}
-                                <span class="badge text-bg-success">Eligible</span>
-                            {% else %}
-                                <span class="badge text-bg-warning">Not eligible</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ snapshot.calculated_at }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="7" class="text-center text-muted py-4">
-                            No eligibility snapshots found yet.
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Eligibility monitor</p><h1>Self-practice & OSCE eligibility</h1><p>Review the latest stored attendance snapshots across module offerings.</p></div></section>
+<div class="surface-card table-card"><div class="table-responsive"><table class="table table-hover" data-mobile-labels><thead><tr><th>Student</th><th>Module</th><th>Cohort</th><th>Attendance</th><th>Self-practice</th><th>OSCE</th><th>Calculated</th></tr></thead><tbody>{% for snapshot in snapshots %}<tr><td><div class="table-primary-text">{{ snapshot.student.get_full_name|default:snapshot.student.username }}</div><div class="table-secondary-text">{{ snapshot.student.student_profile.registration_number|default:snapshot.student.username }}</div></td><td>{{ snapshot.module_offering.module.code }}</td><td>{{ snapshot.module_offering.cohort.code }}</td><td><strong>{{ snapshot.attendance_percentage }}%</strong></td><td>{% if snapshot.is_self_practice_eligible %}<span class="status-pill success">Eligible</span>{% else %}<span class="status-pill warning">Not eligible</span>{% endif %}</td><td>{% if snapshot.is_osce_eligible %}<span class="status-pill success">Eligible</span>{% else %}<span class="status-pill warning">Not eligible</span>{% endif %}</td><td>{{ snapshot.calculated_at }}</td></tr>{% empty %}<tr><td colspan="7">{% include "partials/empty_state.html" with empty_icon="bi-award" empty_title="No eligibility snapshots" empty_message="Snapshots are created when module attendance is refreshed." %}</td></tr>{% endfor %}</tbody></table></div></div>{% include "partials/pagination.html" %}
 {% endblock %}

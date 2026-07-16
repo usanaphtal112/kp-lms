@@ -1,0 +1,3 @@
+{% extends "layouts/auth.html" %}
+{% block title %}Registration unavailable | KP-HSLMS{% endblock %}
+{% block auth_content %}<div class="auth-card text-center"><span class="empty-state-icon"><i class="bi bi-person-lock"></i></span><div class="auth-card-header"><p class="kp-eyebrow">Controlled registration</p><h2>Public signup is not available</h2><p>KP-HSLMS accounts are created by authorized institutional administrators. Contact the KP ICT team if you require access.</p></div><a class="btn btn-kp-primary w-100" href="{% url 'account_login' %}">Return to sign in</a></div>{% endblock %}

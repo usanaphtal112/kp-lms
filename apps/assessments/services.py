@@ -5,6 +5,10 @@ from django.utils import timezone
 
 from apps.academics.models import ModuleEnrollmentStatus
 from apps.attendance.services import calculate_student_module_attendance
+from apps.core.audit import log_audit
+from apps.core.models import AuditAction
+from apps.notifications.models import NotificationType
+from apps.notifications.services import notify_admins
 
 from .models import (
     AttemptStatus,
@@ -14,6 +18,7 @@ from .models import (
     OSCEResult,
     OSCEScore,
     RetakeRequestStatus,
+    OSCEMarkAuditLog,
 )
 
 
@@ -89,7 +94,6 @@ def generate_osce_attempts_for_eligible_students(*, osce_exam, created_by):
         "ineligible_students": ineligible_students,
     }
 
-
 @transaction.atomic
 def save_attempt_scores(*, attempt, score_data, marked_by):
     for rubric_item, score_value in score_data.items():
@@ -103,6 +107,7 @@ def save_attempt_scores(*, attempt, score_data, marked_by):
                 "score": Decimal("0.00"),
             },
         )
+        old_score = score.score
 
         score.score = score_value
         score.marked_by = marked_by
@@ -116,6 +121,26 @@ def save_attempt_scores(*, attempt, score_data, marked_by):
                 "remarks",
             ]
         )
+
+        if old_score != score_value:
+            OSCEMarkAuditLog.objects.create(
+                score=score,
+                attempt=attempt,
+                rubric_item=rubric_item,
+                actor=marked_by,
+                old_score=old_score,
+                new_score=score_value,
+                reason="OSCE mark entry or update.",
+            )
+
+            log_audit(
+                actor=marked_by,
+                action=AuditAction.MARK_CHANGE,
+                target_object=score,
+                message="OSCE score changed.",
+                old_values={"score": str(old_score)},
+                new_values={"score": str(score_value)},
+            )
 
     attempt.status = AttemptStatus.SUBMITTED
     attempt.submitted_by = marked_by
@@ -223,6 +248,21 @@ def approve_exam_results(*, osce_exam, approved_by):
         ]
     )
 
+    log_audit(
+        actor=approved_by,
+        action=AuditAction.APPROVE,
+        target_object=osce_exam,
+        message=f"Approved {approved_count} OSCE results.",
+    )
+
+    notify_admins(
+        actor=approved_by,
+        title="OSCE results approved",
+        message=f"Results approved for {osce_exam.title}.",
+        notification_type=NotificationType.OSCE,
+        url=f"/assessments/exams/{osce_exam.pk}/",
+    )
+
     return approved_count
 
 
@@ -253,6 +293,13 @@ def publish_exam_results(*, osce_exam, published_by):
             "published_at",
             "updated_at",
         ]
+    )
+
+    log_audit(
+        actor=published_by,
+        action=AuditAction.PUBLISH,
+        target_object=osce_exam,
+        message="OSCE results published.",
     )
 
     return osce_exam

@@ -1,41 +1,7 @@
 {% extends "labs/base.html" %}
-
-{% block title %}Labs | KP-HSLMS{% endblock %}
-
+{% block title %}Skills Laboratory | KP-HSLMS{% endblock %}
 {% block labs_content %}
-<section class="lab-header">
-    <p class="kp-eyebrow">Skills laboratory</p>
-    <h1>Lab Management</h1>
-    <p>Manage rooms, schedules, and booking approvals.</p>
-</section>
-
-<div class="row g-4">
-    <div class="col-md-3">
-        <a href="{% url 'labs:labroom_list' %}" class="lab-card">
-            <span>Total rooms</span>
-            <strong>{{ room_count }}</strong>
-        </a>
-    </div>
-
-    <div class="col-md-3">
-        <a href="{% url 'labs:labroom_list' %}" class="lab-card">
-            <span>Active rooms</span>
-            <strong>{{ active_room_count }}</strong>
-        </a>
-    </div>
-
-    <div class="col-md-3">
-        <a href="{% url 'bookings:demonstration_list' %}" class="lab-card">
-            <span>Pending bookings</span>
-            <strong>{{ pending_booking_count }}</strong>
-        </a>
-    </div>
-
-    <div class="col-md-3">
-        <a href="{% url 'labs:schedule' %}" class="lab-card">
-            <span>Approved bookings</span>
-            <strong>{{ approved_booking_count }}</strong>
-        </a>
-    </div>
-</div>
+<section class="page-hero"><div><p class="kp-eyebrow">Skills laboratory</p><h1>Laboratory Operations</h1><p>Coordinate rooms, schedules, self-practice activities, supervision, and verified practical procedures across the health-sciences laboratory.</p></div><div class="page-actions"><a class="btn btn-outline-secondary" href="{% url 'labs:labroom_create' %}">Add room</a><a class="btn btn-kp-primary" href="{% url 'labs:schedule' %}">Open schedule</a></div></section>
+<div class="stat-grid"><a class="stat-card text-decoration-none" href="{% url 'labs:labroom_list' %}"><span class="stat-card-icon"><i class="bi bi-door-open"></i></span><span>Total rooms</span><strong>{{ room_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'labs:labroom_list' %}"><span class="stat-card-icon"><i class="bi bi-check-circle"></i></span><span>Active rooms</span><strong>{{ active_room_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'bookings:demonstration_list' %}"><span class="stat-card-icon"><i class="bi bi-hourglass-split"></i></span><span>Pending bookings</span><strong>{{ pending_booking_count }}</strong></a><a class="stat-card text-decoration-none" href="{% url 'labs:schedule' %}"><span class="stat-card-icon"><i class="bi bi-calendar2-check"></i></span><span>Approved bookings</span><strong>{{ approved_booking_count }}</strong></a></div>
+<div class="row g-4 mt-1"><div class="col-lg-6"><a class="kp-card kp-card-hover d-block text-decoration-none text-reset" href="{% url 'labs:self_practice_list' %}"><span class="module-icon stat-card-icon"><i class="bi bi-clipboard2-pulse"></i></span><h2 class="h5">Self-practice management</h2><p class="text-kp-muted">Review student requests, assign supervisors, record outcomes, and maintain procedure history.</p><span class="fw-bold small text-kp-primary">Open self-practice <i class="bi bi-arrow-right"></i></span></a></div><div class="col-lg-6"><a class="kp-card kp-card-hover d-block text-decoration-none text-reset" href="{% url 'labs:procedure_log_list' %}"><span class="module-icon stat-card-icon"><i class="bi bi-list-check"></i></span><h2 class="h5">Verified procedure logs</h2><p class="text-kp-muted">Review the practical skills students have performed and supervisors have verified.</p><span class="fw-bold small text-kp-primary">View competency logs <i class="bi bi-arrow-right"></i></span></a></div></div>
 {% endblock %}

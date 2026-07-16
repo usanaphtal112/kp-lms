@@ -1,12 +1,4 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'inventory/css/inventory.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="inventory-page">
-    {% block inventory_content %}{% endblock %}
-</div>
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/modules/inventory.css' %}">{% block inventory_extra_css %}{% endblock %}{% endblock %}
+{% block content %}<div class="inventory-accent">{% block inventory_content %}{% endblock %}</div>{% endblock %}

@@ -1,0 +1,3 @@
+.error-shell { display:grid; min-height:calc(100vh - var(--kp-topbar-height)); place-items:center; padding:2rem; }
+.error-card { width:min(100%,680px); padding:clamp(2rem,5vw,4rem); border:1px solid var(--kp-border); border-radius:var(--kp-radius-xl); background:#fff; box-shadow:var(--kp-shadow); text-align:center; }
+.error-code { display:block; color:var(--kp-primary-700); font-size:clamp(4rem,14vw,8rem); font-weight:950; letter-spacing:-.08em; line-height:.9; }

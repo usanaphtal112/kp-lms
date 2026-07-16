@@ -8,6 +8,7 @@ from .models import (
     OSCEScore,
     OSCEStation,
     RetakeRequest,
+    OSCEMarkAuditLog,
 )
 
 
@@ -209,3 +210,34 @@ class RetakeRequestAdmin(admin.ModelAdmin):
         "reviewed_by",
         "created_attempt",
     ]
+
+@admin.register(OSCEMarkAuditLog)
+class OSCEMarkAuditLogAdmin(admin.ModelAdmin):
+    list_display = [
+        "attempt",
+        "rubric_item",
+        "actor",
+        "old_score",
+        "new_score",
+        "created_at",
+    ]
+    search_fields = [
+        "attempt__student__username",
+        "attempt__student__student_profile__registration_number",
+        "rubric_item__criterion",
+        "reason",
+    ]
+    list_filter = ["created_at"]
+    readonly_fields = [
+        "score",
+        "attempt",
+        "rubric_item",
+        "actor",
+        "old_score",
+        "new_score",
+        "reason",
+        "created_at",
+    ]
+
+    def has_add_permission(self, request):
+        return False

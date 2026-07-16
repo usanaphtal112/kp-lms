@@ -1,64 +1,6 @@
 {% extends "academics/base.html" %}
-
 {% block title %}{{ module.code }} | KP-HSLMS{% endblock %}
-
 {% block academics_content %}
-<section class="academics-header d-flex justify-content-between align-items-start gap-3">
-    <div>
-        <p class="kp-eyebrow">Module</p>
-        <h1>{{ module.code }} - {{ module.title }}</h1>
-        <p>{{ module.program }}</p>
-    </div>
-
-    <a href="{% url 'academics:module_update' module.pk %}" class="btn btn-kp-primary">
-        Edit module
-    </a>
-</section>
-
-<div class="row g-4">
-    <div class="col-lg-7">
-        <div class="academic-panel">
-            <h2>Module details</h2>
-
-            <dl class="row mb-0">
-                <dt class="col-sm-4">Program</dt>
-                <dd class="col-sm-8">{{ module.program }}</dd>
-
-                <dt class="col-sm-4">Year level</dt>
-                <dd class="col-sm-8">{{ module.get_year_level_display }}</dd>
-
-                <dt class="col-sm-4">Semester</dt>
-                <dd class="col-sm-8">{{ module.get_semester_number_display }}</dd>
-
-                <dt class="col-sm-4">Credits</dt>
-                <dd class="col-sm-8">{{ module.credits }}</dd>
-
-                <dt class="col-sm-4">Attendance requirement</dt>
-                <dd class="col-sm-8">{{ module.attendance_requirement }}%</dd>
-
-                <dt class="col-sm-4">Pass mark</dt>
-                <dd class="col-sm-8">{{ module.pass_mark }}%</dd>
-            </dl>
-        </div>
-    </div>
-
-    <div class="col-lg-5">
-        <div class="academic-panel">
-            <h2>Procedures</h2>
-
-            <div class="list-group list-group-flush">
-                {% for procedure in module.procedures.all %}
-                    <div class="list-group-item px-0">
-                        <strong>{{ procedure.code }} - {{ procedure.name }}</strong>
-                        <div class="small text-muted">
-                            Minimum practices: {{ procedure.minimum_required_practices }}
-                        </div>
-                    </div>
-                {% empty %}
-                    <p class="text-muted mb-0">No procedures registered for this module.</p>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-</div>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Module profile</p><h1>{{ module.code }} · {{ module.title }}</h1><p>{{ module.program }} · {{ module.get_year_level_display }} · {{ module.get_semester_number_display }}</p></div><div class="page-actions"><a class="btn btn-kp-primary" href="{% url 'academics:module_update' module.pk %}"><i class="bi bi-pencil-square me-1"></i>Edit module</a></div></section>
+<div class="detail-grid"><section class="surface-card"><h2 class="h5 mb-3">Module configuration</h2><div class="detail-list"><dl class="detail-item"><dt>Program</dt><dd>{{ module.program }}</dd></dl><dl class="detail-item"><dt>Credits</dt><dd>{{ module.credits }}</dd></dl><dl class="detail-item"><dt>Attendance requirement</dt><dd>{{ module.attendance_requirement }}%</dd></dl><dl class="detail-item"><dt>Pass mark</dt><dd>{{ module.pass_mark }}%</dd></dl><dl class="detail-item"><dt>Year level</dt><dd>{{ module.get_year_level_display }}</dd></dl><dl class="detail-item"><dt>Semester</dt><dd>{{ module.get_semester_number_display }}</dd></dl></div>{% if module.description %}<div class="mt-4"><h3 class="h6">Description</h3><p class="text-kp-muted">{{ module.description|linebreaks }}</p></div>{% endif %}</section><aside class="surface-card"><div class="d-flex justify-content-between align-items-center mb-3"><h2 class="h5 mb-0">Clinical procedures</h2><a class="btn btn-sm btn-outline-secondary" href="{% url 'academics:procedure_create' %}">Add</a></div><div class="list-group list-group-flush">{% for procedure in module.procedures.all %}<div class="list-group-item px-0"><div class="table-primary-text">{{ procedure.code }} · {{ procedure.name }}</div><div class="table-secondary-text">Minimum practices: {{ procedure.minimum_required_practices }}{% if procedure.is_required %} · Required{% endif %}</div></div>{% empty %}{% include "partials/empty_state.html" with empty_icon="bi-list-check" empty_title="No procedures configured" empty_message="Add practical procedures before scheduling demonstrations and assessments." %}{% endfor %}</div></aside></div>
 {% endblock %}

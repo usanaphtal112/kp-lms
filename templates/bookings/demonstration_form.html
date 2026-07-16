@@ -1,53 +1,6 @@
 {% extends "bookings/base.html" %}
-
 {% block title %}Request Demonstration | KP-HSLMS{% endblock %}
-
 {% block bookings_content %}
-<section class="booking-header">
-    <p class="kp-eyebrow">Demonstration booking</p>
-    <h1>Request demonstration</h1>
-    <p>Select module offering, lab room, date/time, and procedures to be demonstrated.</p>
-</section>
-
-<form method="post" class="card booking-form-card" novalidate>
-    {% csrf_token %}
-
-    <div class="card-body">
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-
-        <div class="row g-3">
-            {% for field in form %}
-                <div class="col-md-6">
-                    <label class="form-label" for="{{ field.id_for_label }}">
-                        {{ field.label }}
-                    </label>
-                    {{ field }}
-
-                    {% if field.help_text %}
-                        <div class="form-text">{{ field.help_text }}</div>
-                    {% endif %}
-
-                    {% if field.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ field.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="card-footer d-flex justify-content-between">
-        <a href="{% url 'bookings:demonstration_list' %}" class="btn btn-outline-secondary">
-            Cancel
-        </a>
-        <button type="submit" class="btn btn-kp-primary">
-            Submit request
-        </button>
-    </div>
-</form>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Demonstration request</p><h1>Plan a laboratory demonstration</h1><p>Choose the module offering, room, schedule, topic, and procedures. The request will be reviewed before appearing as approved on the laboratory schedule.</p></div></section>
+<form method="post" class="surface-card" data-prevent-double-submit novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}<div class="row g-3">{% for field in form %}<div class="{% if field.name == 'description' or field.name == 'notes' or field.name == 'procedures' %}col-12{% else %}col-md-6{% endif %}"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% if field.errors %}<div class="invalid-feedback d-block">{{ field.errors }}</div>{% endif %}</div>{% endfor %}</div><div class="form-actions"><a class="btn btn-outline-secondary" href="{% url 'bookings:demonstration_list' %}">Cancel</a><button class="btn btn-kp-primary" type="submit">Submit request</button></div></form>
 {% endblock %}

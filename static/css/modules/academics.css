@@ -1,0 +1,3 @@
+.academics-accent .stat-card-icon,
+.academics-accent .module-icon { color: #0f766e; background: #e9fbf8; }
+.curriculum-node { border-left: 3px solid var(--kp-primary); padding-left: 1rem; }

@@ -1,12 +1,4 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
-{% block extra_css %}
-    {% block accounts_extra_css %}{% endblock %}
-{% endblock %}
-
-{% block content %}
-<div class="accounts-page">
-    {% block accounts_content %}{% endblock %}
-</div>
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/modules/accounts.css' %}">{% block accounts_extra_css %}{% endblock %}{% endblock %}
+{% block content %}<div class="accounts-accent">{% block accounts_content %}{% endblock %}</div>{% endblock %}

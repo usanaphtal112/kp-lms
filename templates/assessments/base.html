@@ -1,12 +1,4 @@
 {% extends "layouts/base.html" %}
 {% load static %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'assessments/css/assessments.css' %}">
-{% endblock %}
-
-{% block content %}
-<div class="assessments-page">
-    {% block assessments_content %}{% endblock %}
-</div>
-{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/modules/assessments.css' %}">{% block assessments_extra_css %}{% endblock %}{% endblock %}
+{% block content %}<div class="assessments-accent">{% block assessments_content %}{% endblock %}</div>{% endblock %}

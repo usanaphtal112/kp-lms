@@ -1,0 +1,3 @@
+.labs-accent .stat-card-icon,
+.labs-accent .module-icon { color: #0369a1; background: #e8f6ff; }
+.procedure-chip { display:inline-flex; margin:.15rem; padding:.28rem .55rem; border-radius:999px; color:var(--kp-primary-700); background:var(--kp-primary-100); font-size:.72rem; font-weight:750; }

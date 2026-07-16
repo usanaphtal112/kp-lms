@@ -1,54 +1,6 @@
 {% extends "labs/base.html" %}
-
 {% block title %}Request Self-Practice | KP-HSLMS{% endblock %}
-
 {% block labs_content %}
-<section class="lab-header">
-    <p class="kp-eyebrow">Self-practice request</p>
-    <h1>Request Self-Practice</h1>
-    <p>You can only request self-practice for modules where you meet the 80% attendance requirement.</p>
-</section>
-
-<form method="post" class="card lab-form-card" novalidate>
-    {% csrf_token %}
-
-    <div class="card-body">
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {{ form.non_field_errors }}
-            </div>
-        {% endif %}
-
-        <div class="row g-3">
-            {% for field in form %}
-                <div class="col-md-6">
-                    <label class="form-label" for="{{ field.id_for_label }}">
-                        {{ field.label }}
-                    </label>
-
-                    {{ field }}
-
-                    {% if field.help_text %}
-                        <div class="form-text">{{ field.help_text }}</div>
-                    {% endif %}
-
-                    {% if field.errors %}
-                        <div class="invalid-feedback d-block">
-                            {{ field.errors }}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <div class="card-footer d-flex justify-content-between">
-        <a href="{% url 'labs:self_practice_list' %}" class="btn btn-outline-secondary">
-            Cancel
-        </a>
-        <button type="submit" class="btn btn-kp-primary">
-            Submit request
-        </button>
-    </div>
-</form>
+<section class="page-hero compact"><div><p class="kp-eyebrow">Student practice request</p><h1>Request self-practice</h1><p>Only module offerings where the 80% attendance rule is satisfied can be approved for self-practice.</p></div></section>
+<form method="post" class="surface-card" data-prevent-double-submit novalidate>{% csrf_token %}{% if form.non_field_errors %}<div class="alert alert-danger">{{ form.non_field_errors }}</div>{% endif %}<div class="row g-3">{% for field in form %}<div class="{% if field.name == 'procedures' or field.name == 'objectives' or field.name == 'notes' %}col-12{% else %}col-md-6{% endif %}"><label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{% if field.help_text %}<div class="form-text">{{ field.help_text }}</div>{% endif %}{% if field.errors %}<div class="invalid-feedback d-block">{{ field.errors }}</div>{% endif %}</div>{% endfor %}</div><div class="form-actions"><a class="btn btn-outline-secondary" href="{% url 'labs:self_practice_list' %}">Cancel</a><button class="btn btn-kp-primary" type="submit">Submit request</button></div></form>
 {% endblock %}

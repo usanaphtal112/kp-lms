@@ -1,0 +1,4 @@
+.notification-item { border:0; }
+.notification-item.unread { background:var(--kp-primary-050); }
+.notification-button { width:100%; padding:0; border:0; color:inherit; background:transparent; text-align:left; }
+.notification-dot { width:.55rem; height:.55rem; border-radius:50%; background:var(--kp-primary); box-shadow:0 0 0 4px rgba(var(--kp-primary-rgb),.13); }

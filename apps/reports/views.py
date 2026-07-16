@@ -13,6 +13,7 @@ from django.views.generic import (
     TemplateView,
     UpdateView,
 )
+from django.db.models import Q
 
 from apps.accounts.models import UserRole
 
@@ -26,6 +27,7 @@ from .forms import (
     ClinicalTeachingReportForm,
     PortfolioItemForm,
     ReportReviewForm,
+    ClinicalReportFilterForm,
 )
 from .mixins import (
     AdministrationReportRequiredMixin,
@@ -96,6 +98,7 @@ class ClinicalReportListView(LoginRequiredMixin, ListView):
     login_url = "account_login"
 
     def get_queryset(self):
+        queryset = super().get_queryset() if hasattr(super(), "get_queryset") else ClinicalReport.objects.all()
         queryset = ClinicalReport.objects.select_related(
             "student",
             "student__student_profile",
@@ -110,14 +113,40 @@ class ClinicalReportListView(LoginRequiredMixin, ListView):
             queryset = queryset.filter(student=self.request.user)
         elif role == UserRole.LECTURER:
             queryset = queryset.filter(module_offering__coordinator=self.request.user)
-        elif role not in [
-            UserRole.IT_ADMIN,
-            UserRole.ADMINISTRATION,
-            UserRole.LAB_COORDINATOR,
-        ]:
+        elif role not in [UserRole.IT_ADMIN, UserRole.ADMINISTRATION, UserRole.LAB_COORDINATOR]:
             queryset = queryset.none()
 
+        form = ClinicalReportFilterForm(self.request.GET)
+
+        if form.is_valid():
+            q = form.cleaned_data.get("q")
+            status = form.cleaned_data.get("status")
+            module_code = form.cleaned_data.get("module_code")
+
+            if q:
+                queryset = queryset.filter(
+                    Q(title__icontains=q)
+                    | Q(facility_name__icontains=q)
+                    | Q(student__username__icontains=q)
+                    | Q(student__first_name__icontains=q)
+                    | Q(student__last_name__icontains=q)
+                    | Q(student__student_profile__registration_number__icontains=q)
+                    | Q(module_offering__module__code__icontains=q)
+                )
+
+            if status:
+                queryset = queryset.filter(status=status)
+
+            if module_code:
+                queryset = queryset.filter(module_offering__module__code__icontains=module_code)
+
         return queryset.order_by("-created_at")
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_form"] = ClinicalReportFilterForm(self.request.GET)
+        return context
 
 
 class ClinicalReportCreateView(StudentRequiredMixin, CreateView):

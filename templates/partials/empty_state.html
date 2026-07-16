@@ -1,0 +1,10 @@
+<div class="empty-state">
+    <div>
+        <span class="empty-state-icon"><i class="bi {{ empty_icon|default:'bi-inbox' }}" aria-hidden="true"></i></span>
+        <h3>{{ empty_title|default:"No records found" }}</h3>
+        <p>{{ empty_message|default:"There is nothing to display yet. New records will appear here when they are created." }}</p>
+        {% if empty_url and empty_action %}
+            <a class="btn btn-kp-primary" href="{{ empty_url }}">{{ empty_action }}</a>
+        {% endif %}
+    </div>
+</div>

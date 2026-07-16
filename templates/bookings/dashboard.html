@@ -1,46 +1,7 @@
 {% extends "bookings/base.html" %}
-
-{% block title %}Bookings | KP-HSLMS{% endblock %}
-
+{% block title %}Laboratory Bookings | KP-HSLMS{% endblock %}
 {% block bookings_content %}
-<section class="booking-header d-flex justify-content-between align-items-start gap-3">
-    <div>
-        <p class="kp-eyebrow">Laboratory bookings</p>
-        <h1>Booking Dashboard</h1>
-        <p>Request, approve, reject, and monitor laboratory bookings.</p>
-    </div>
-
-    <a href="{% url 'bookings:demonstration_create' %}" class="btn btn-kp-primary">
-        Request demonstration
-    </a>
-</section>
-
-<div class="row g-4">
-    <div class="col-md-4">
-        <div class="booking-stat-card">
-            <span>Requested</span>
-            <strong>{{ requested_count }}</strong>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="booking-stat-card">
-            <span>Approved</span>
-            <strong>{{ approved_count }}</strong>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="booking-stat-card">
-            <span>Rejected</span>
-            <strong>{{ rejected_count }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="mt-4">
-    <a href="{% url 'bookings:demonstration_list' %}" class="btn btn-outline-secondary">
-        View demonstration bookings
-    </a>
-</div>
+<section class="page-hero"><div><p class="kp-eyebrow">Laboratory coordination</p><h1>Booking Dashboard</h1><p>Plan demonstration sessions, review approval status, coordinate laboratory rooms, and keep practical activities visible across the Faculty of Health Sciences.</p></div><div class="page-actions"><a class="btn btn-outline-secondary" href="{% url 'labs:schedule' %}"><i class="bi bi-calendar3 me-1"></i>View schedule</a><a class="btn btn-kp-primary" href="{% url 'bookings:demonstration_create' %}"><i class="bi bi-plus-lg me-1"></i>Request demonstration</a></div></section>
+<div class="stat-grid"><a class="stat-card text-decoration-none" href="{% url 'bookings:demonstration_list' %}"><span class="stat-card-icon"><i class="bi bi-hourglass-split"></i></span><span>Requested</span><strong>{{ requested_count }}</strong><small>Waiting for review</small></a><a class="stat-card text-decoration-none" href="{% url 'bookings:demonstration_list' %}"><span class="stat-card-icon"><i class="bi bi-check2-circle"></i></span><span>Approved</span><strong>{{ approved_count }}</strong><small>Ready on the schedule</small></a><a class="stat-card text-decoration-none" href="{% url 'bookings:demonstration_list' %}"><span class="stat-card-icon"><i class="bi bi-x-octagon"></i></span><span>Rejected</span><strong>{{ rejected_count }}</strong><small>Require review or replanning</small></a><a class="stat-card text-decoration-none" href="{% url 'labs:schedule' %}"><span class="stat-card-icon"><i class="bi bi-calendar-week"></i></span><span>Schedule</span><strong><i class="bi bi-arrow-up-right"></i></strong><small>Room and activity calendar</small></a></div>
+<div class="surface-card mt-4"><div class="row align-items-center g-4"><div class="col-lg-8"><p class="kp-eyebrow">Booking protocol</p><h2 class="h4">Clear approval and scheduling flow</h2><p class="text-kp-muted">A request links the module offering, room, date, lecturer, topic, and procedures. Approval makes the activity available for attendance and downstream competency tracking.</p></div><div class="col-lg-4"><ol class="timeline"><li class="timeline-item"><strong>Request submitted</strong><span class="table-secondary-text">Lecturer proposes activity and resources.</span></li><li class="timeline-item"><strong>Coordinator review</strong><span class="table-secondary-text">Time, room, and context are verified.</span></li><li class="timeline-item"><strong>Scheduled activity</strong><span class="table-secondary-text">Approved booking enters the laboratory schedule.</span></li></ol></div></div></div>
 {% endblock %}

@@ -1,56 +1,7 @@
 {% extends "attendance/base.html" %}
-
 {% block title %}Attendance | KP-HSLMS{% endblock %}
-
 {% block attendance_content %}
-<section class="attendance-header d-flex justify-content-between align-items-start gap-3">
-    <div>
-        <p class="kp-eyebrow">Attendance tracking</p>
-        <h1>Attendance Dashboard</h1>
-        <p>Mark demonstration attendance and monitor self-practice / OSCE eligibility.</p>
-    </div>
-
-    <a href="{% url 'attendance:session_list' %}" class="btn btn-kp-primary">
-        Mark attendance
-    </a>
-</section>
-
-<div class="row g-4">
-    <div class="col-md-3">
-        <div class="attendance-stat-card">
-            <span>Scheduled</span>
-            <strong>{{ scheduled_count }}</strong>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="attendance-stat-card">
-            <span>Completed</span>
-            <strong>{{ completed_count }}</strong>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="attendance-stat-card">
-            <span>Need marking</span>
-            <strong>{{ unmarked_count }}</strong>
-        </div>
-    </div>
-
-    <div class="col-md-3">
-        <div class="attendance-stat-card">
-            <span>Eligible snapshots</span>
-            <strong>{{ eligible_count }}</strong>
-        </div>
-    </div>
-</div>
-
-<div class="mt-4 d-flex flex-wrap gap-2">
-    <a href="{% url 'attendance:session_list' %}" class="btn btn-outline-secondary">
-        Demonstration sessions
-    </a>
-    <a href="{% url 'attendance:eligibility_list' %}" class="btn btn-outline-secondary">
-        Eligibility monitor
-    </a>
-</div>
+<section class="page-hero"><div><p class="kp-eyebrow">Demonstration attendance</p><h1>Attendance & Eligibility</h1><p>Record participation in approved demonstrations and monitor the 80% threshold that controls self-practice and OSCE eligibility.</p></div><div class="page-actions"><a class="btn btn-outline-secondary" href="{% url 'attendance:eligibility_list' %}">Eligibility monitor</a><a class="btn btn-kp-primary" href="{% url 'attendance:session_list' %}">Mark attendance</a></div></section>
+<div class="stat-grid"><a class="stat-card text-decoration-none" href="{% url 'attendance:session_list' %}"><span class="stat-card-icon"><i class="bi bi-calendar-event"></i></span><span>Scheduled</span><strong>{{ scheduled_count }}</strong><small>Approved demonstrations</small></a><a class="stat-card text-decoration-none" href="{% url 'attendance:session_list' %}"><span class="stat-card-icon"><i class="bi bi-check2-all"></i></span><span>Completed</span><strong>{{ completed_count }}</strong><small>Attendance-calculated sessions</small></a><a class="stat-card text-decoration-none" href="{% url 'attendance:session_list' %}"><span class="stat-card-icon"><i class="bi bi-pencil-square"></i></span><span>Need marking</span><strong>{{ unmarked_count }}</strong><small>Past sessions awaiting records</small></a><a class="stat-card text-decoration-none" href="{% url 'attendance:eligibility_list' %}"><span class="stat-card-icon"><i class="bi bi-award"></i></span><span>Eligible snapshots</span><strong>{{ eligible_count }}</strong><small>Self-practice and OSCE ready</small></a></div>
+<div class="surface-card mt-4"><div class="row g-4 align-items-center"><div class="col-lg-8"><p class="kp-eyebrow">Attendance policy</p><h2 class="h4">Transparent, module-specific eligibility</h2><p class="text-kp-muted">Present and late statuses count as attended. Excused sessions are excluded from the denominator. The live percentage is compared with each module's configured attendance requirement.</p></div><div class="col-lg-4"><div class="attendance-score">80%</div><p class="small text-kp-muted mt-2 mb-0">Default threshold for self-practice and OSCE.</p></div></div></div>
 {% endblock %}

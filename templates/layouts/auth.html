@@ -1,29 +1,31 @@
 {% extends "layouts/base.html" %}
 {% load static %}
 
-{% block body_class %}kp-auth-page{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'account/css/auth.css' %}">
-    {% block auth_extra_css %}{% endblock %}
-{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/pages/auth.css' %}">{% endblock %}
 
 {% block app_body %}
-    <main class="kp-auth-shell">
-        <section class="kp-auth-brand-panel">
-            <div class="kp-auth-brand-content">
-                <div class="kp-brand-mark">KP</div>
-                <h1>KP-HSLMS</h1>
-                <p>
-                    Health Sciences Laboratory Management System for demonstrations,
-                    self-practice, OSCE, attendance, inventory, and academic progression.
-                </p>
-            </div>
-        </section>
+<main class="auth-shell" id="main-content">
+    <section class="auth-brand-panel" aria-labelledby="auth-brand-title">
+        <div class="auth-brand-content">
+            <div class="auth-brand-mark" aria-hidden="true">KP</div>
+            <p class="kp-eyebrow text-white">Faculty of Health Sciences</p>
+            <h1 id="auth-brand-title">Clinical learning, coordinated with confidence.</h1>
+            <p>KP-HSLMS brings demonstrations, attendance, self-practice, OSCE assessment, inventory, reports, and competency history into one secure institutional workspace.</p>
+            <ul class="auth-feature-list">
+                <li><i class="bi bi-check-circle-fill"></i> Competency-based tracking</li>
+                <li><i class="bi bi-check-circle-fill"></i> Secure role-based access</li>
+                <li><i class="bi bi-check-circle-fill"></i> Auditable approvals</li>
+                <li><i class="bi bi-check-circle-fill"></i> Centralized reporting</li>
+            </ul>
+        </div>
+    </section>
 
-        <section class="kp-auth-form-panel">
+    <section class="auth-form-panel">
+        <div class="w-100">
             {% include "partials/messages.html" %}
             {% block auth_content %}{% endblock %}
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 {% endblock %}

@@ -1,0 +1,2 @@
+.import-json { max-width: 420px; max-height: 170px; padding:.7rem; overflow:auto; border-radius:.6rem; background:#f6f8fa; font-size:.73rem; white-space:pre-wrap; }
+.import-header-code { display:block; padding:.7rem; border:1px solid var(--kp-border); border-radius:.65rem; background:var(--kp-surface-soft); color:var(--kp-navy); font-size:.76rem; overflow-wrap:anywhere; }
